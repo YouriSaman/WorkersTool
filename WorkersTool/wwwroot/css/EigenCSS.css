@@ -1,0 +1,120 @@
+﻿body {
+}
+
+.nav-account {
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.brand-logo {
+    max-height: 200px;
+    margin-top: 20px;
+}
+
+.margin-top {
+    margin-top: 30px;
+}
+
+.registreer {
+    background: #00A0E2;
+    width: 125px;
+    height: 30px;
+    color: white !important;
+}
+
+.registreer:hover {
+    background: #007db3;
+    color: white;
+    text-decoration: none;
+}
+
+.home-logo {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    float: right;
+}
+
+/*Custom panel AH*/
+.panel-ah {
+    border-color: #00A0E2;
+}
+.panel-ah > .panel-heading {
+    color: white;
+    background-color: #00A0E2;
+    border-color: #00A0E2;
+}
+.panel-ah > .panel-heading + .panel-collapse > .panel-body {
+    border-top-color: #00A0E2;
+}
+.panel-ah > .panel-heading .badge {
+    color: white;
+    background-color: #00A0E2;
+}
+.panel-ah > .panel-footer + .panel-collapse > .panel-body {
+    border-bottom-color: #00A0E2;
+}
+
+/*Custom button*/
+
+.btn-ah {
+    color: #fff;
+    background-color: #00A0E2;
+    border-color: #008fcc;
+    margin-top: 15px;
+    float: right;
+}
+.btn-danger:focus,
+.btn-danger.focus {
+    color: #fff;
+    background-color: #00b3ff;
+    border-color: #00a0e2;
+}
+.btn-danger:hover {
+    color: #fff;
+    background-color: #00b3ff;
+    border-color: #00a0e2;
+}
+.btn-danger:active,
+.btn-danger.active,
+.open > .dropdown-toggle.btn-danger {
+    color: #fff;
+    background-color: #00b3ff;
+    border-color: #00a0e2;
+}
+.btn-danger:active:hover,
+.btn-danger.active:hover,
+.open > .dropdown-toggle.btn-danger:hover,
+.btn-danger:active:focus,
+.btn-danger.active:focus,
+.open > .dropdown-toggle.btn-danger:focus,
+.btn-danger:active.focus,
+.btn-danger.active.focus,
+.open > .dropdown-toggle.btn-danger.focus {
+    color: #fff;
+    background-color: #00a0e2;
+    border-color: #006b99;
+}
+.btn-danger:active,
+.btn-danger.active,
+.open > .dropdown-toggle.btn-danger {
+    background-image: none;
+}
+.btn-danger.disabled:hover,
+.btn-danger[disabled]:hover,
+fieldset[disabled] .btn-danger:hover,
+.btn-danger.disabled:focus,
+.btn-danger[disabled]:focus,
+fieldset[disabled] .btn-danger:focus,
+.btn-danger.disabled.focus,
+.btn-danger[disabled].focus,
+fieldset[disabled] .btn-danger.focus {
+    background-color: #00a1e6;
+    border-color: #00a1e6;
+}
+.btn-danger .badge {
+    color: white;
+    background-color: #fff;
+}
