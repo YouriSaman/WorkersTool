@@ -8,7 +8,7 @@ namespace Models
     {
         public DateTime Birthday { get; set; }
         public string Gender { get; set; }
-        public string Residence { get; set; }
-        public int Rights { get; set; }
+        public bool Rights { get; set; }
+        public int AccountId { get; set; }
     }
 }

@@ -1,0 +1,173 @@
+﻿@model AddScheduleViewModel
+
+<h1>Rooster aanmaken</h1>
+<form class="margin-bottom75">
+    <div class="col-md-12">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <select class="form-control">
+                <option>Selecteer werknemer</option> @*AccountId als id voor in andere form als value of ID VAN COOKIE*@
+
+                @*@foreach (var userAccount in Model.UserAccounts)
+                    {
+                    <option>@userAccount.Name <input hidden @userAccount.Id /> </option>
+                    }*@
+            </select> <br />
+            <select class="form-control"> @*Weeknummer als id voor andere form als value*@
+                <option>Week 43</option> 
+                <option>Week 44</option>
+                <option>Week 46</option>
+                <option>Week 47</option>
+            </select>
+        </div>
+        <div class="col-md-3"></div>
+    </div>
+</form>
+<br/>
+<div class="margin-bottom75"></div>
+
+<form method="post">
+    <div class="respons-scroll">
+        <table class="center">
+            <tr>
+                <th class="padding-left-right10">Maandag</th>
+                <th class="padding-left-right10">Dinsdag</th>
+                <th class="padding-left-right10">Woensdag</th>
+                <th class="padding-left-right10">Donderdag</th>
+                <th class="padding-left-right10">Vrijdag</th>
+                <th class="padding-left-right10">Zaterdag</th>
+                <th class="padding-left-right10">Zondag</th>
+            </tr>
+            <tr>
+                <td class="padding-left-right10">
+                    <div class="shift-part">
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <span class="color-white font-size11"><b>tot</b></span>
+                            </span>
+                        </div>
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
+                            </span>
+                        </div>
+                    </div>
+
+                    @*<div class="shift-part-next">   --- Latere toevoeging als één shift toevoegen al goed lukt en alles daaromheen ---
+                <div class="input-group">
+                    <input class="form-control" type="time" />
+                    <span class="input-group-addon ah-background">
+                        <span class="color-white font-size11"><b>tot</b></span>
+                    </span>
+                </div>
+                <div class="input-group">
+                    <input class="form-control" type="time" />
+                    <span class="input-group-addon ah-background">
+                        <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
+                    </span>
+                </div>
+                </div>*@
+                </td>
+                <td class="padding-left-right10">
+                    <div class="shift-part">
+                        <div class="input-group">
+                            <input class="form-control" type="time" asp-for="Time1"/>
+                            <span class="input-group-addon ah-background">
+                                <span class="color-white font-size11"><b>tot</b></span>
+                            </span>
+                        </div>
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td class="padding-left-right10">
+                    <div class="shift-part">
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <span class="color-white font-size11"><b>tot</b></span>
+                            </span>
+                        </div>
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td class="padding-left-right10">
+                    <div class="shift-part">
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <span class="color-white font-size11"><b>tot</b></span>
+                            </span>
+                        </div>
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td class="padding-left-right10">
+                    <div class="shift-part">
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <span class="color-white font-size11"><b>tot</b></span>
+                            </span>
+                        </div>
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td class="padding-left-right10">
+                    <div class="shift-part">
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <span class="color-white font-size11"><b>tot</b></span>
+                            </span>
+                        </div>
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+                <td class="padding-left-right10">
+                    <div class="shift-part">
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <span class="color-white font-size11"><b>tot</b></span>
+                            </span>
+                        </div>
+                        <div class="input-group">
+                            <input class="form-control" type="time" />
+                            <span class="input-group-addon ah-background">
+                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
+                            </span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <button type="submit">Opslaan!</button>
+</form>

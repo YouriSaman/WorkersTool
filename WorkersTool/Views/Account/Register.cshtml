@@ -1,0 +1,33 @@
+﻿@model RegisterBranchViewModel
+
+<div class="margin-top30 panel panel-ah">
+    <div class="panel-heading">Registreer een filiaal</div>
+    <div class="panel-body">
+        <form method="post">
+            <div class="col-md-5">
+                <label>Filiaalnummer:</label>
+                <input class="form-control" type="number" min="1000" max="9999" maxlength="4" asp-for="Branch.Branchnumber"/>
+                <label>Gebruikersnaam:</label>
+                <input class="form-control" type="text" asp-for="Account.Username"/>
+                <label>Wachtwoord:</label>
+                <input class="form-control" type="password" asp-for="Account.Password" />
+                <label>Email:</label>
+                <input class="form-control" type="email" asp-for="Account.Email" />
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5">
+                <label>Adres:</label>
+                <input class="form-control" type="text" asp-for="Account.Adress"/>
+                <label>Postcode:</label>
+                <input class="form-control" type="text" asp-for="Account.Postalcode"/>
+                <label>Plaats:</label>
+                <input class="form-control" type="text" asp-for="Account.Residence"/>
+                <label>Telefoonnummer:</label>
+                <input class="form-control" type="text" asp-for="Account.Phonenumber"/>
+            </div>
+            
+
+            <button class="btn btn-ah" type="submit">Registreer</button>
+        </form>
+    </div>
+</div>

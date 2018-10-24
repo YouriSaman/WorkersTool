@@ -7,6 +7,6 @@ namespace Models
     public class Branch
     {
         public int Branchnumber { get; set; }
-        public string Location { get; set; }
+        public int AccountId { get; set; }
     }
 }

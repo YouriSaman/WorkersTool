@@ -7,6 +7,8 @@ namespace Data
 {
     public class ForumContext
     {
+        private string connectionstring = "Server=mssql.fhict.local;Database=dbi383661_extra;User Id=dbi383661_extra;Password=YouriS12;";
+
         public void AddMessage(Message messag)
         {
             throw new NotImplementedException();

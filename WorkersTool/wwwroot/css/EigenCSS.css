@@ -1,41 +1,49 @@
-﻿body {
+﻿/*Align || White space*/
+.margin-bottom75 {
+    margin-bottom: 75px;
 }
 
-.nav-account {
-    text-decoration: none;
-    font-size: 20px;
-    border-radius: 10px;
-    text-align: center;
+.center {
+    margin: 0 auto;
 }
 
-.brand-logo {
-    max-height: 200px;
-    margin-top: 20px;
-}
-
-.margin-top {
+.margin-top30 {
     margin-top: 30px;
 }
 
-.registreer {
-    background: #00A0E2;
-    width: 125px;
-    height: 30px;
-    color: white !important;
+.padding-left-right10 {
+    padding: 0 10px;
 }
 
-.registreer:hover {
-    background: #007db3;
+.shift-part-next {
+    margin-top: 10px;
+}
+
+/*Color || Font*/
+.color-white {
     color: white;
-    text-decoration: none;
 }
 
-.home-logo {
-    width: 100%;
-    max-width: 500px;
-    height: auto;
-    float: right;
+.ah-color {
+    color: #00A0E2
 }
+
+.ah-background {
+    background: #00A0E2;
+}
+
+.white-link {
+    color: white;
+}
+
+.white-link:hover {
+    color: #cccccc;
+}
+
+.font-size11 {
+    font-size: 11px;
+}
+
 
 /*Custom panel AH*/
 .panel-ah {
@@ -58,7 +66,6 @@
 }
 
 /*Custom button*/
-
 .btn-ah {
     color: #fff;
     background-color: #00A0E2;
@@ -117,4 +124,41 @@ fieldset[disabled] .btn-danger.focus {
 .btn-danger .badge {
     color: white;
     background-color: #fff;
+}
+
+/*Other || Bulky*/
+.nav-account {
+    text-decoration: none;
+    font-size: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.brand-logo {
+    max-height: 200px;
+    margin-top: 20px;
+}
+
+.registreer {
+    background: #00A0E2;
+    width: 125px;
+    height: 30px;
+    color: white !important;
+}
+
+.registreer:hover {
+    background: #007db3;
+    color: white;
+    text-decoration: none;
+}
+
+.home-logo {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    float: right;
+}
+
+.respons-scroll {
+    overflow-x: auto;
 }

@@ -1,0 +1,41 @@
+﻿@model RegisterUserViewModel
+
+<div class="margin-top30 panel panel-ah">
+    <div class="panel-heading">Registreer een gebruiker</div>
+    <div class="panel-body">
+        <form method="post">
+            <div class="col-md-5">
+                <label>Naam:</label>
+                <input class="form-control" type="text" asp-for="Account.Name"/>
+                <label>Gebruikersnaam:</label>
+                <input class="form-control" type="text" asp-for="Account.Username"/>
+                <label>Wachtwoord:</label>
+                <input class="form-control" type="password" asp-for="Account.Password"/>
+                <label>Email:</label>
+                <input class="form-control" type="email" asp-for="Account.Email"/>
+                <label>Geboortedatum</label>
+                <input class="form-control" type="date" asp-for="User.Birthday"/>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-5">
+                <label>Adres:</label>
+                <input class="form-control" type="text" asp-for="Account.Adress"/>
+                <label>Postcode:</label>
+                <input class="form-control" type="text" asp-for="Account.Postalcode"/>
+                <label>Plaats:</label>
+                <input class="form-control" type="text" asp-for="Account.Residence"/>
+                <label>Telefoonnummer:</label>
+                <input class="form-control" type="text" asp-for="Account.Phonenumber"/>
+                <label>Geslacht</label>
+                <select class="form-control" asp-for="User.Gender">
+                    <option value="Man">Man</option>
+                    <option value="Vrouw">Vrouw</option>
+                    <option value="Overig">Overig</option>
+                </select>
+            </div>
+
+
+            <button class="btn btn-ah" type="submit">Registreer gebruiker</button>
+        </form>
+    </div>
+</div>

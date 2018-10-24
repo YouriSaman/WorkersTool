@@ -7,6 +7,8 @@ namespace Data
 {
     public class ShiftContext
     {
+        private string connectionstring = "Server=mssql.fhict.local;Database=dbi383661_extra;User Id=dbi383661_extra;Password=YouriS12;";
+
         public List<Department> GetAllDepartments()
         {
             throw new NotImplementedException();

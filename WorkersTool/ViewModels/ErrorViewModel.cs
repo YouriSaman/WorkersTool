@@ -1,6 +1,6 @@
 using System;
 
-namespace WorkersTool.Models
+namespace WorkersTool.ViewModels
 {
     public class ErrorViewModel
     {
