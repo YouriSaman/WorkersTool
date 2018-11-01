@@ -1,173 +1,97 @@
-﻿@model AddScheduleViewModel
+﻿@using Models
+@model AddScheduleViewModel
 
-<h1>Rooster aanmaken</h1>
-<form class="margin-bottom75">
-    <div class="col-md-12">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-            <select class="form-control">
-                <option>Selecteer werknemer</option> @*AccountId als id voor in andere form als value of ID VAN COOKIE*@
-
-                @*@foreach (var userAccount in Model.UserAccounts)
+<div class="container">
+    <h1>Rooster aanmaken</h1>
+    <form class="margin-bottom75">
+        <div class="col-md-12">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <select id="UserSelect" class="form-control" onchange="Userselect()">
+                    <option>Selecteer werknemer</option> @*AccountId als id voor in andere form als value of ID VAN COOKIE*@
+                    @foreach (var userAccount in Model.UserAccounts)
                     {
-                    <option>@userAccount.Name <input hidden @userAccount.Id /> </option>
-                    }*@
-            </select> <br />
-            <select class="form-control"> @*Weeknummer als id voor andere form als value*@
-                <option>Week 43</option> 
-                <option>Week 44</option>
-                <option>Week 46</option>
-                <option>Week 47</option>
-            </select>
+                        <option value="@userAccount.Id">@userAccount.Name</option>
+                    }
+                </select> <br />
+                <select class="form-control">
+                    @*Weeknummer als id/value voor andere form als value*@
+                    @foreach (var week in Model.Weeks)
+                    {
+                        <option value="@week.Weeknumber">Week @week.Weeknumber</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3"></div>
         </div>
-        <div class="col-md-3"></div>
-    </div>
-</form>
-<br/>
-<div class="margin-bottom75"></div>
+    </form>
+    <br />
+    <div class="margin-bottom75"></div>
 
-<form method="post">
-    <div class="respons-scroll">
-        <table class="center">
-            <tr>
-                <th class="padding-left-right10">Maandag</th>
-                <th class="padding-left-right10">Dinsdag</th>
-                <th class="padding-left-right10">Woensdag</th>
-                <th class="padding-left-right10">Donderdag</th>
-                <th class="padding-left-right10">Vrijdag</th>
-                <th class="padding-left-right10">Zaterdag</th>
-                <th class="padding-left-right10">Zondag</th>
-            </tr>
-            <tr>
-                <td class="padding-left-right10">
-                    <div class="shift-part">
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <span class="color-white font-size11"><b>tot</b></span>
-                            </span>
-                        </div>
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                            </span>
-                        </div>
-                    </div>
+    <form method="post">
+        <div class="respons-scroll">
+            <table class="center">
+                <tr>                    
+                    @*Dagen in een enum[6] en dan Model.Days[i].Name etc. zodat deze ook met foreach-loop kan*@
+                    <th class="padding-left-right10">Maandag @if (@Model.Days != null){<i>@Model.Days[0].Date.ToString("d")</i>}</th>
+                    <th class="padding-left-right10">Dinsdag @if (@Model.Days != null){<i>@Model.Days[1].Date.ToString("d")</i>}</th>
+                    <th class="padding-left-right10">Woensdag @if (@Model.Days != null){<i> @Model.Days[2].Date.ToString("d")</i>}</th>
+                    <th class="padding-left-right10">Donderdag @if (@Model.Days != null){<i>@Model.Days[3].Date.ToString("d")</i>}</th>
+                    <th class="padding-left-right10">Vrijdag @if (@Model.Days != null){<i>@Model.Days[4].Date.ToString("d")</i>}</th>
+                    <th class="padding-left-right10">Zaterdag @if (@Model.Days != null){<i>@Model.Days[5].Date.ToString("d")</i>}</th>
+                    <th class="padding-left-right10">Zondag @if (@Model.Days != null){<i>@Model.Days[6].Date.ToString("d")</i>}</th>
+                </tr>
+                <tr>
+                    @for (int i = 0; i < 7; i++) //Dagen in de week
+                    {
+                        <td class="padding-left-right10">
+                            @for (int j = 0; j < 1; j++) //1 moet counter worden aan de hand van shifts al meerdere shifts op een dag kunnen
+                            {
+                                <div class="shift-part">
+                                    <input hidden type="datetime" asp-for="@Model.Days[i].Shifts[j].Date" value="@Model.Days[i].Date"/>
+                                    <input hidden type="number" asp-for="Weeknumber" value="0"/>
+                                    <input class="InputUserId" hidden type="number" asp-for="@Model.Days[i].Shifts[j].UserId" value="0"/>
+                                    <div class="input-group">
+                                        <input class="form-control" type="time" asp-for="@Model.Days[i].Shifts[j].StartTime"/>
+                                        <span class="input-group-addon ah-background">
+                                            <span class="color-white font-size11"><b>tot</b></span>
+                                        </span>
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="form-control" type="time" asp-for="@Model.Days[i].Shifts[j].EndTime"/>
+                                        <span class="input-group-addon ah-background">
+                                            <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
+                                        </span>
+                                    </div>
+                                </div>
 
-                    @*<div class="shift-part-next">   --- Latere toevoeging als één shift toevoegen al goed lukt en alles daaromheen ---
-                <div class="input-group">
-                    <input class="form-control" type="time" />
-                    <span class="input-group-addon ah-background">
-                        <span class="color-white font-size11"><b>tot</b></span>
-                    </span>
-                </div>
-                <div class="input-group">
-                    <input class="form-control" type="time" />
-                    <span class="input-group-addon ah-background">
-                        <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                    </span>
-                </div>
-                </div>*@
-                </td>
-                <td class="padding-left-right10">
-                    <div class="shift-part">
-                        <div class="input-group">
-                            <input class="form-control" type="time" asp-for="Time1"/>
-                            <span class="input-group-addon ah-background">
-                                <span class="color-white font-size11"><b>tot</b></span>
-                            </span>
-                        </div>
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                            </span>
-                        </div>
-                    </div>
-                </td>
-                <td class="padding-left-right10">
-                    <div class="shift-part">
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <span class="color-white font-size11"><b>tot</b></span>
-                            </span>
-                        </div>
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                            </span>
-                        </div>
-                    </div>
-                </td>
-                <td class="padding-left-right10">
-                    <div class="shift-part">
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <span class="color-white font-size11"><b>tot</b></span>
-                            </span>
-                        </div>
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                            </span>
-                        </div>
-                    </div>
-                </td>
-                <td class="padding-left-right10">
-                    <div class="shift-part">
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <span class="color-white font-size11"><b>tot</b></span>
-                            </span>
-                        </div>
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                            </span>
-                        </div>
-                    </div>
-                </td>
-                <td class="padding-left-right10">
-                    <div class="shift-part">
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <span class="color-white font-size11"><b>tot</b></span>
-                            </span>
-                        </div>
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                            </span>
-                        </div>
-                    </div>
-                </td>
-                <td class="padding-left-right10">
-                    <div class="shift-part">
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <span class="color-white font-size11"><b>tot</b></span>
-                            </span>
-                        </div>
-                        <div class="input-group">
-                            <input class="form-control" type="time" />
-                            <span class="input-group-addon ah-background">
-                                <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                            </span>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </div>
-    <button type="submit">Opslaan!</button>
-</form>
+                                @*<div class="shift-part-next">   --- Latere toevoeging als één shift toevoegen al goed lukt en alles daaromheen ---
+                                    <div class="input-group">
+                                    <input class="form-control" type="time" />
+                                    <span class="input-group-addon ah-background">
+                                        <span class="color-white font-size11"><b>tot</b></span>
+                                    </span>
+                                    </div>
+                                    <div class="input-group">
+                                        <input class="form-control" type="time" />
+                                        <span class="input-group-addon ah-background">
+                                            <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
+                                        </span>
+                                    </div>
+                                    </div>*@
+                            }
+                        </td>
+                    }
+                </tr>
+            </table>
+        </div>
+        <button class="btn btn-ah" type="submit">Opslaan!</button>
+    </form>
+</div>
+
+<script>
+    function Userselect() {
+        var selectedId = document.getElementById("UserSelect").value;
+        $(".InputUserId").attr('value', selectedId);
+    };
+</script>

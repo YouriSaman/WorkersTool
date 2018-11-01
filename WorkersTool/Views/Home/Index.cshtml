@@ -1,6 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model Models.Account
 
 <div class="container">
     <div class="row text-center">
@@ -13,19 +11,19 @@
                 <div class="panel panel-ah">
                     <div class="panel-heading">Login met je account</div>
                     <div class="panel-body">
-                        <form>
+                        <form method="post" asp-controller="Account" asp-action="Login">
                             <label>Gebruikersnaam:</label>
-                            <input class="form-control" type="text"/>
+                            <input class="form-control" type="text" asp-for="Username"/>
                             <label>Wachtwoord:</label>
-                            <input class="form-control" type="password" />
-                            
+                            <input class="form-control" type="password" asp-for="Password"/>
+
                             <button class="btn btn-ah" type="submit">Login</button>
                         </form>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <img class="img-responsive home-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Albert_Heijn_Logo.svg/1200px-Albert_Heijn_Logo.svg.png" />
+                <img class="img-responsive home-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Albert_Heijn_Logo.svg/1200px-Albert_Heijn_Logo.svg.png"/>
             </div>
         </div>
     </div>

@@ -6,11 +6,9 @@ using Models;
 
 namespace WorkersTool.ViewModels
 {
-    public class AddScheduleViewModel
+    public class ShowScheduleViewModel
     {
-        public int Weeknumber { get; set; }
-        public List<Account> UserAccounts { get; set; }
-        public List<Week> Weeks { get; set; }
         public List<Day> Days { get; set; }
+        public List<Week> Weeks { get; set; }
     }
 }

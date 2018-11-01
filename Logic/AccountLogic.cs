@@ -38,6 +38,11 @@ namespace Logic
             return _accountContext.GetAllAccounts();
         }
 
+        public Account GetAccountByUsername(string username)
+        {
+            return _accountContext.GetAccountByUsername(username);
+        }
+
         public Account GetAccountById(int id)
         {
             return _accountContext.GetAccountById(id);

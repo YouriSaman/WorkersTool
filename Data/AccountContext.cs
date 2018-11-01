@@ -19,7 +19,7 @@ namespace Data
             using (var conn = new SqlConnection(connectionstring))
             {
                 using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
+                { 
                     cmd.Parameters.AddWithValue("@Username", account.Username);
                     cmd.Parameters.AddWithValue("@Password", account.Password);
                     cmd.Parameters.AddWithValue("@Email", account.Email);
@@ -61,10 +61,10 @@ namespace Data
 
             using (var conn = new SqlConnection(connectionstring))
             {
-                conn.Open();
 
                 using (var cmd = new SqlCommand(query, conn))
                 {
+                    conn.Open();
                     cmd.Parameters.AddWithValue("@Branchnumber", branch.Branchnumber);
                     cmd.Parameters.AddWithValue("@AccountId", branch.AccountId);
 
@@ -80,10 +80,9 @@ namespace Data
 
             using (var conn = new SqlConnection(connectionstring))
             {
-                conn.Open();
-
                 using (var cmd = new SqlCommand(query, conn))
                 {
+                    conn.Open();
                     cmd.Parameters.AddWithValue("@Birthday", user.Birthday);
                     cmd.Parameters.AddWithValue("@Gender", user.Gender);
                     cmd.Parameters.AddWithValue("@AccountId", user.AccountId);
@@ -99,9 +98,9 @@ namespace Data
 
             using (var conn = new SqlConnection(connectionstring))
             {
-                conn.Open();
                 using (var cmd = new SqlCommand(query, conn))
                 {
+                    conn.Open();
                     cmd.Parameters.AddWithValue("@Username", account.Username);
                     cmd.Parameters.AddWithValue("@Password", account.Password);
 
@@ -133,10 +132,9 @@ namespace Data
 
             using (var conn = new SqlConnection(connectionstring))
             {
-                conn.Open();
-
                 using (var cmd = new SqlCommand(query, conn))
                 {
+                    conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -167,15 +165,14 @@ namespace Data
 
         public List<User> GetAllUsers()
         {
-            string query = "SELECT * FROM User";
+            string query = "SELECT * FROM [User]";
             var users = new List<User>();
 
             using (var conn = new SqlConnection(connectionstring))
             {
-                conn.Open();
-
                 using (var cmd = new SqlCommand(query, conn))
                 {
+                    conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -184,13 +181,50 @@ namespace Data
                             {
                                 Birthday = (DateTime)reader["Birthday"],
                                 Gender = (string)reader["Gender"],
-                                Rights = (bool)reader["Rights"]
+                                Rights = (bool)reader["Rights"],
+                                AccountId = (int)reader["Account_Id"]
                             };
 
                             users.Add(user);
                         }
 
                         return users;
+                    }
+                }
+            }
+        }
+
+        public Account GetAccountByUsername(string username)
+        {
+            string query = "SELECT * FROM Account WHERE Username= @Username";
+            var account = new Account();
+
+            using (var conn = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Username", username);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            account = new Account()
+                            {
+                                Id = (int)reader["Id"],
+                                Username = (string)reader["Username"],
+                                Password = (string)reader["Password"],
+                                Email = (string)reader["Email"],
+                                Name = (string)reader["Name"],
+                                Phonenumber = (string)reader["Phonenumber"],
+                                Adress = (string)reader["Adress"],
+                                Postalcode = (string)reader["Postalcode"],
+                                Residence = (string)reader["Residence"]
+                            };
+                        }
+
+                        return account;
                     }
                 }
             }
@@ -203,10 +237,9 @@ namespace Data
 
             using (var conn = new SqlConnection(connectionstring))
             {
-                conn.Open();
-
                 using (var cmd = new SqlCommand(query, conn))
                 {
+                    conn.Open();
                     cmd.Parameters.AddWithValue("@Id", id);
 
                     using (var reader = cmd.ExecuteReader())
