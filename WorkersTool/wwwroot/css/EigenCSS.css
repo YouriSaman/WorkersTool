@@ -3,6 +3,10 @@
     margin-bottom: 75px;
 }
 
+.margin-top50 {
+    margin-top: 50px;
+}
+
 .center {
     margin: 0 auto;
 }
@@ -126,6 +130,12 @@ fieldset[disabled] .btn-danger.focus {
     background-color: #fff;
 }
 
+/*Button extra*/
+.btn-absolute-right {
+    position: absolute;
+    right: 2px;
+}
+
 /*Other || Bulky*/
 .nav-account {
     text-decoration: none;
@@ -161,4 +171,12 @@ fieldset[disabled] .btn-danger.focus {
 
 .respons-scroll {
     overflow-x: auto;
+}
+
+.show-shift-part {
+    border: 1px solid #00A0E2;
+    position: relative;
+    border-radius: 10%;
+    background: #ccf0ff;
+    padding: 0 5px 25px;
 }

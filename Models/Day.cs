@@ -10,5 +10,10 @@ namespace Models
         public string Name { get; set; }
         public DateTime Date { get; set; }
         public List<Shift> Shifts { get; set; }
+
+        public Day()
+        {
+            Shifts = new List<Shift>();
+        }
     }
 }

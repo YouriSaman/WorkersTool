@@ -14,7 +14,7 @@
                         <option value="@userAccount.Id">@userAccount.Name</option>
                     }
                 </select> <br />
-                <select class="form-control">
+                <select id="WeekSelect" class="form-control" asp-for="Weeknumber" onchange="NewSchedule()">
                     @*Weeknummer als id/value voor andere form als value*@
                     @foreach (var week in Model.Weeks)
                     {
@@ -27,71 +27,53 @@
     </form>
     <br />
     <div class="margin-bottom75"></div>
-
+    
     <form method="post">
-        <div class="respons-scroll">
-            <table class="center">
-                <tr>                    
-                    @*Dagen in een enum[6] en dan Model.Days[i].Name etc. zodat deze ook met foreach-loop kan*@
-                    <th class="padding-left-right10">Maandag @if (@Model.Days != null){<i>@Model.Days[0].Date.ToString("d")</i>}</th>
-                    <th class="padding-left-right10">Dinsdag @if (@Model.Days != null){<i>@Model.Days[1].Date.ToString("d")</i>}</th>
-                    <th class="padding-left-right10">Woensdag @if (@Model.Days != null){<i> @Model.Days[2].Date.ToString("d")</i>}</th>
-                    <th class="padding-left-right10">Donderdag @if (@Model.Days != null){<i>@Model.Days[3].Date.ToString("d")</i>}</th>
-                    <th class="padding-left-right10">Vrijdag @if (@Model.Days != null){<i>@Model.Days[4].Date.ToString("d")</i>}</th>
-                    <th class="padding-left-right10">Zaterdag @if (@Model.Days != null){<i>@Model.Days[5].Date.ToString("d")</i>}</th>
-                    <th class="padding-left-right10">Zondag @if (@Model.Days != null){<i>@Model.Days[6].Date.ToString("d")</i>}</th>
-                </tr>
-                <tr>
-                    @for (int i = 0; i < 7; i++) //Dagen in de week
-                    {
-                        <td class="padding-left-right10">
-                            @for (int j = 0; j < 1; j++) //1 moet counter worden aan de hand van shifts al meerdere shifts op een dag kunnen
-                            {
-                                <div class="shift-part">
-                                    <input hidden type="datetime" asp-for="@Model.Days[i].Shifts[j].Date" value="@Model.Days[i].Date"/>
-                                    <input hidden type="number" asp-for="Weeknumber" value="0"/>
-                                    <input class="InputUserId" hidden type="number" asp-for="@Model.Days[i].Shifts[j].UserId" value="0"/>
-                                    <div class="input-group">
-                                        <input class="form-control" type="time" asp-for="@Model.Days[i].Shifts[j].StartTime"/>
-                                        <span class="input-group-addon ah-background">
-                                            <span class="color-white font-size11"><b>tot</b></span>
-                                        </span>
-                                    </div>
-                                    <div class="input-group">
-                                        <input class="form-control" type="time" asp-for="@Model.Days[i].Shifts[j].EndTime"/>
-                                        <span class="input-group-addon ah-background">
-                                            <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                @*<div class="shift-part-next">   --- Latere toevoeging als één shift toevoegen al goed lukt en alles daaromheen ---
-                                    <div class="input-group">
-                                    <input class="form-control" type="time" />
-                                    <span class="input-group-addon ah-background">
-                                        <span class="color-white font-size11"><b>tot</b></span>
-                                    </span>
-                                    </div>
-                                    <div class="input-group">
-                                        <input class="form-control" type="time" />
-                                        <span class="input-group-addon ah-background">
-                                            <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                                        </span>
-                                    </div>
-                                    </div>*@
-                            }
-                        </td>
-                    }
-                </tr>
-            </table>
-        </div>
-        <button class="btn btn-ah" type="submit">Opslaan!</button>
+        <div id="Schedule"></div>
     </form>
+
+    
 </div>
 
 <script>
     function Userselect() {
         var selectedId = document.getElementById("UserSelect").value;
         $(".InputUserId").attr('value', selectedId);
+    };
+
+    function OnloadeNewSchedule() {
+        var weeknumber = $('#WeekSelect').val();
+        $.ajax({
+            type: "POST",
+            url: "/Shift/NewSchedule",
+            data: { Weeknumber: weeknumber },
+            dataType: "html",
+            success: function (data) {
+                $('#Schedule').html(data);
+            },
+            error: function () {
+                alert("Something went wrong");
+            }
+        });
+    }
+
+    window.onload = OnloadeNewSchedule;
+
+    function NewSchedule() {
+        var weeknumber = $('#WeekSelect').val();
+        $.ajax({
+            type: "POST",
+            url: "/Shift/NewSchedule",
+            data: { Weeknumber: weeknumber },
+            dataType: "html",
+            success: function (data) {
+                $('#Schedule').html(data);
+                var selectedId = document.getElementById("UserSelect").value;
+                $(".InputUserId").attr('value', selectedId);
+            },
+            error: function () {
+                alert("Something went wrong");
+            }
+        });
     };
 </script>

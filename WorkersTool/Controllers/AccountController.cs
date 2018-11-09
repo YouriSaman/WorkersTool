@@ -55,12 +55,10 @@ namespace WorkersTool.Controllers
 
         private void PerformLogin(Account account)
         {
-            var claims = new List<Claim>
+            List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, account.Username),
-                new Claim(ClaimTypes.NameIdentifier, Convert.ToString(account.Id)),
-                new Claim(ClaimTypes.GivenName, account.Name),
-                //new Claim(ClaimTypes.Role, gebruiker.Admin ? "Admin" : "Gebruiker"),
+                new Claim(ClaimTypes.Name, account.Name),
+                new Claim("Id", account.Id.ToString()),
             };
 
             var claimsIdentity = new ClaimsIdentity(claims,

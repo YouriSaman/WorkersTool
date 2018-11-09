@@ -94,7 +94,7 @@ namespace Data
 
         public bool LoginCheck(Account account)
         {
-            string query = "SELECT Username, Password FROM Account WHERE Username=@Username, AND Password=@Password";
+            string query = "SELECT * FROM Account WHERE Username=@Username AND Password=@Password";
 
             using (var conn = new SqlConnection(connectionstring))
             {

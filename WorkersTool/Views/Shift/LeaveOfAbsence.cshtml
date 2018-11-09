@@ -1,0 +1,19 @@
+﻿@using Models
+@model LeaveOfAbsenceViewModel
+
+<div class="col-md-12">
+    <div class="col-md-3"></div>
+    <div class="col-lg-6">
+        <div class="panel panel-ah">
+            <div class="panel-heading">Vervanging aanvragen</div>
+            <div class="panel-body">
+                <b> @Model.Shift.Department.Name afdeling </b> <br />
+                Datum: @Model.Shift.Date.ToString("dd/MM/yyyy") <br/>
+                Van @Model.Shift.StartTime.ToString(@"hh\:mm") tot @Model.Shift.EndTime.ToString(@"hh\:mm") <br /><br />
+
+                <textarea class="form-control " asp-for="ReasonOfAbsence" placeholder="Vul eventueel een reden in"></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>

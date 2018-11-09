@@ -1,0 +1,56 @@
+﻿@model ShowScheduleViewModel
+
+<h1>Mijn rooster</h1>
+
+<div class="col-md-12">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <form id="FormWeekSelect">
+            <select id="WeekSelect" class="form-control" asp-for="Weeknumber" onchange="ShowSchedule()">
+                @foreach (var week in Model.Weeks)
+                {
+                    <option value="@week.Weeknumber">Week @week.Weeknumber</option>
+                }
+            </select>
+        </form>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<div id="Schedule"></div>
+
+<script>
+    function OnloadeShowSchedule() {
+        var weeknumber = $('#WeekSelect').val();
+        $.ajax({
+            type: "POST",
+            url: "/Shift/ShowSchedule",
+            data: { Weeknumber: weeknumber },
+            dataType: "html",
+            success: function (data) {
+                $('#Schedule').html(data);
+            },
+            error: function () {
+                alert("Something went wrong");
+            }
+        });
+    }
+
+    window.onload = OnloadeShowSchedule;
+
+    function ShowSchedule() {
+        var weeknumber = $('#WeekSelect').val();
+        $.ajax({
+            type: "POST",
+            url: "/Shift/ShowSchedule",
+            data: { Weeknumber: weeknumber },
+            dataType: "html",
+            success: function(data) {
+                $('#Schedule').html(data);
+            },
+            error: function() {
+                alert("Something went wrong");
+            }
+        });
+    };
+</script>

@@ -12,5 +12,12 @@ namespace WorkersTool.ViewModels
         public List<Account> UserAccounts { get; set; }
         public List<Week> Weeks { get; set; }
         public List<Day> Days { get; set; }
+        public List<Department> Departments { get; set; }
+
+        public AddScheduleViewModel()
+        {
+            Days = new List<Day>();
+            Departments = new List<Department>();
+        }
     }
 }
