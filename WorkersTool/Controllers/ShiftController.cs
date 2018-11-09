@@ -12,11 +12,14 @@ namespace WorkersTool.Controllers
     {
         AccountLogic _accountLogic = new AccountLogic();
         ShiftLogic _shiftLogic = new ShiftLogic();
+        WeekLogic _weekLogic = new WeekLogic();
+        DepartmentLogic _departmentLogic = new DepartmentLogic();
+
         public IActionResult AddSchedule()
         {
             var viewModel = new AddScheduleViewModel();
             var weeknumber = 43;
-            viewModel.Weeks = _shiftLogic.GetAllWeeks();
+            viewModel.Weeks = _weekLogic.GetAllWeeks();
             viewModel.UserAccounts = _accountLogic.GetAllUserAccounts();
             //var week = shiftLogic.GetWeekByNumber(weeknumber);
             //viewModel.Days = shiftLogic.GiveDatesOfWeekWithFirstShift(week);
@@ -36,15 +39,15 @@ namespace WorkersTool.Controllers
         public IActionResult NewSchedule(AddScheduleViewModel viewModel)
         {
             var weeknumber = viewModel.Weeknumber;
-            var week = _shiftLogic.GetWeekByNumber(weeknumber);
+            var week = _weekLogic.GetWeekByNumber(weeknumber);
             viewModel.Days = _shiftLogic.GiveDatesOfWeekWithFirstShift(week);
-            viewModel.Departments = _shiftLogic.GetAllDepartments();
+            viewModel.Departments = _departmentLogic.GetAllDepartments();
             return PartialView(viewModel);
         }
 
         public IActionResult MySchedule(ShowScheduleViewModel viewModel)
         {
-            viewModel.Weeks = _shiftLogic.GetAllWeeks();
+            viewModel.Weeks = _weekLogic.GetAllWeeks();
             return View(viewModel);
         }
 
@@ -61,7 +64,7 @@ namespace WorkersTool.Controllers
         {
             var viewModel = new LeaveOfAbsenceViewModel();
             var shift = _shiftLogic.GetShiftById(shiftId);
-            shift.Department = _shiftLogic.GetDepartmentById(shift.DepartmentId);
+            shift.Department = _departmentLogic.GetDepartmentById(shift.DepartmentId);
             viewModel.Shift = shift;
             viewModel.UserId = userId;
             return PartialView(viewModel);
