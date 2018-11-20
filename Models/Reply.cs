@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Models
 {
-    public class Reply
+    public class Reply: Forumpart
     {
     }
 }

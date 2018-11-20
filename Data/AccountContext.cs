@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Models;
 
@@ -179,6 +180,7 @@ namespace Data
                         {
                             var user = new User()
                             {
+                                Id = (int)reader["Id"],
                                 Birthday = (DateTime)reader["Birthday"],
                                 Gender = (string)reader["Gender"],
                                 Rights = (bool)reader["Rights"],
@@ -266,10 +268,62 @@ namespace Data
             }
         }
 
-        //public List<User> GetUsersOfDepartment(int DepartmentId)          //Kan niet volgens de DB die er nu is en classes
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public int GetAccountIdByUserId(int userId)
+        {
+            string query = "SELECT Account_Id FROM [User] WHERE Id= @Id";
+            int accountId = 0;
+
+            using (var conn = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Id", userId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            accountId = (int) reader["Account_Id"];
+                        }
+                    }
+
+                    return accountId;
+                }
+            }
+        }
+
+        public User GetUserByAccountId(int accountId)
+        {
+            string query = "SELECT * FROM [User] WHERE Account_Id= @AccountId";
+            var user = new User();
+
+            using (var conn = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@AccountId", accountId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            user = new User()
+                            {
+                                Id = (int)reader["Id"],
+                                Birthday = (DateTime)reader["Birthday"],
+                                Gender = (string)reader["Gender"],
+                                Rights = (bool)reader["Rights"],
+                                AccountId = (int)reader["Account_Id"]
+                            };
+                        }
+
+                        return user;
+                    }
+                }
+            }
+        }
 
         public void DeleteAccount(Account account)
         {

@@ -10,8 +10,13 @@
                 <b> @Model.Shift.Department.Name afdeling </b> <br />
                 Datum: @Model.Shift.Date.ToString("dd/MM/yyyy") <br/>
                 Van @Model.Shift.StartTime.ToString(@"hh\:mm") tot @Model.Shift.EndTime.ToString(@"hh\:mm") <br /><br />
-
-                <textarea class="form-control " asp-for="ReasonOfAbsence" placeholder="Vul eventueel een reden in"></textarea>
+                
+                <form method="post" asp-action="LeaveOfAbsence">
+                    <input hidden asp-for="Shift.Id" value="@Model.Shift.Id"/>
+                    <textarea class="form-control " asp-for="ReasonOfAbsence" placeholder="Vul eventueel een reden in"></textarea>
+                    <button type="submit" class="btn btn-ah float-right"></button>
+                </form>
+                
             </div>
         </div>
     </div>

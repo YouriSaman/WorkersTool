@@ -43,9 +43,15 @@ namespace Logic
             return _accountContext.GetAccountByUsername(username);
         }
 
-        public Account GetAccountById(int id)
+        public Account GetAccountById(int accountId)
         {
-            return _accountContext.GetAccountById(id);
+            return _accountContext.GetAccountById(accountId);
+        }
+
+        public Account GetAccountByUserId(int userId)
+        {
+            int accountId = _accountContext.GetAccountIdByUserId(userId);
+            return GetAccountById(accountId);
         }
 
         public List<User> GetAllUsers()
@@ -53,14 +59,19 @@ namespace Logic
             return _accountContext.GetAllUsers();
         }
 
-        public List<Account> GetAllUserAccounts()
+        public User GetUserByAccountId(int accountId)
         {
-            var userAccounts = new List<Account>();
+            return _accountContext.GetUserByAccountId(accountId);
+        }
 
-            foreach (var user in GetAllUsers())
+        public List<User> GetAllUsersWithAccounts()
+        {
+            var userAccounts = GetAllUsers();
+
+            foreach (var user in userAccounts)
             {
                 var account = GetAccountById(user.AccountId);
-                userAccounts.Add(account);
+                user.Account = account;
             }
 
             return userAccounts;

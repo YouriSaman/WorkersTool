@@ -9,7 +9,7 @@ namespace WorkersTool.ViewModels
     public class AddScheduleViewModel
     {
         public int Weeknumber { get; set; }
-        public List<Account> UserAccounts { get; set; }
+        public List<User> UsersWithAccount { get; set; }
         public List<Week> Weeks { get; set; }
         public List<Day> Days { get; set; }
         public List<Department> Departments { get; set; }

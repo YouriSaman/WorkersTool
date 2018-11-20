@@ -22,7 +22,8 @@ namespace WorkersTool.Controllers
             if (accountLogic.LoginCheck(account))
             {
                 var userAccount = accountLogic.GetAccountByUsername(account.Username);
-                PerformLogin(userAccount);
+                var user = accountLogic.GetUserByAccountId(userAccount.Id);
+                PerformLogin(userAccount, user);
             }
 
             return RedirectToAction("Index", "Home");
@@ -53,12 +54,12 @@ namespace WorkersTool.Controllers
             return View();
         }
 
-        private void PerformLogin(Account account)
+        private void PerformLogin(Account account, User user)
         {
             List<Claim> claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, account.Name),
-                new Claim("Id", account.Id.ToString()),
+                new Claim("Id", user.Id.ToString()),
             };
 
             var claimsIdentity = new ClaimsIdentity(claims,

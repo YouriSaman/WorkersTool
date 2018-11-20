@@ -9,9 +9,9 @@
             <div class="col-md-6">
                 <select id="UserSelect" class="form-control" onchange="Userselect()">
                     <option>Selecteer werknemer</option> @*AccountId als id voor in andere form als value of ID VAN COOKIE*@
-                    @foreach (var userAccount in Model.UserAccounts)
+                    @foreach (var user in Model.UsersWithAccount)
                     {
-                        <option value="@userAccount.Id">@userAccount.Name</option>
+                        <option value="@user.Id">@user.Account.Name</option>
                     }
                 </select> <br />
                 <select id="WeekSelect" class="form-control" asp-for="Weeknumber" onchange="NewSchedule()">
@@ -41,7 +41,7 @@
         $(".InputUserId").attr('value', selectedId);
     };
 
-    function OnloadeNewSchedule() {
+    function OnloadNewSchedule() {
         var weeknumber = $('#WeekSelect').val();
         $.ajax({
             type: "POST",
@@ -57,7 +57,7 @@
         });
     }
 
-    window.onload = OnloadeNewSchedule;
+    window.onload = OnloadNewSchedule;
 
     function NewSchedule() {
         var weeknumber = $('#WeekSelect').val();

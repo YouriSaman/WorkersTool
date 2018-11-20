@@ -18,12 +18,8 @@ namespace WorkersTool.Controllers
         public IActionResult AddSchedule()
         {
             var viewModel = new AddScheduleViewModel();
-            var weeknumber = 43;
             viewModel.Weeks = _weekLogic.GetAllWeeks();
-            viewModel.UserAccounts = _accountLogic.GetAllUserAccounts();
-            //var week = shiftLogic.GetWeekByNumber(weeknumber);
-            //viewModel.Days = shiftLogic.GiveDatesOfWeekWithFirstShift(week);
-            //viewModel.Departments = shiftLogic.GetAllDepartments();
+            viewModel.UsersWithAccount = _accountLogic.GetAllUsersWithAccounts();
             return View(viewModel);
         }
 
@@ -55,7 +51,7 @@ namespace WorkersTool.Controllers
         {
             var viewModel = new ShowScheduleViewModel();
             var weeknumber = showScheduleViewModel.Weeknumber;
-            var userId = Convert.ToInt32(Convert.ToString(User.Claims.Where(claim => claim.Type == "Id").Select(claim => claim.Value).SingleOrDefault())); ;
+            var userId = Convert.ToInt32(Convert.ToString(User.Claims.Where(claim => claim.Type == "Id").Select(claim => claim.Value).SingleOrDefault()));
             viewModel.Days = _shiftLogic.ShowSchedule(weeknumber, userId);
             return PartialView(viewModel);
         }
@@ -68,6 +64,44 @@ namespace WorkersTool.Controllers
             viewModel.Shift = shift;
             viewModel.UserId = userId;
             return PartialView(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult LeaveOfAbsence(LeaveOfAbsenceViewModel viewModel)
+        {
+            var userId = Convert.ToInt32(Convert.ToString(User.Claims.Where(claim => claim.Type == "Id").Select(claim => claim.Value).SingleOrDefault()));
+            _shiftLogic.AddLeaveOfAbsence(viewModel.Shift.Id, userId, viewModel.ReasonOfAbsence);
+            return RedirectToAction("MySchedule"); //Nog met weekId meekrijgen en meegeven, maar dat pas later
+        }
+
+        public IActionResult ListOfAbsences()
+        {
+            var viewModel = new ListOfAbsencesViewModel();
+            var userId = Convert.ToInt32(Convert.ToString(User.Claims.Where(claim => claim.Type == "Id").Select(claim => claim.Value).SingleOrDefault()));
+            viewModel.LeaveOfAbsences = _shiftLogic.GetLeaveOfAbsences(userId);
+            foreach (var item in viewModel.LeaveOfAbsences)
+            {
+                item.Shift = _shiftLogic.GetShiftById(item.ShiftId);
+                item.Shift.Department = _departmentLogic.GetDepartmentById(item.Shift.DepartmentId);
+                item.Shift.Account = _accountLogic.GetAccountByUserId(item.Shift.UserId);
+            }
+            return PartialView(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult CheckLeaveOfAbsenceFromList(ListOfAbsencesViewModel viewModel)
+        {
+            
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public IActionResult HideLeaveOfAbsence(ListOfAbsencesViewModel viewModel)
+        {
+            var shiftId = viewModel.ShiftId;
+            var userId = Convert.ToInt32(Convert.ToString(User.Claims.Where(claim => claim.Type == "Id").Select(claim => claim.Value).SingleOrDefault())); ;
+            _shiftLogic.HideLeaveOfAbsence(shiftId, userId);
+            return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -11,6 +11,8 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <h2>Vervangingsaanvragen</h2>
+                    @*<div id="Loading">Loading...</div>*@
+                    <div id="ListLOA"></div>
                 }
                 else
                 {
@@ -23,7 +25,7 @@
                                 <label>Wachtwoord:</label>
                                 <input class="form-control" type="password" asp-for="Password"/>
 
-                                <button class="btn btn-ah" type="submit">Login</button>
+                                <button class="btn btn-ah float-right" type="submit">Login</button>
                             </form>
                         </div>
                     </div>
@@ -36,3 +38,38 @@
         </div>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        function OnloadListLOA() {
+            $.ajax({
+                type: "GET",
+                url: "/Shift/ListOfAbsences",
+                data: {},
+                dataType: "html",
+                success: function(data) {
+                    $('#ListLOA').html(data);
+                },
+                error: function() {
+                    alert("Something went wrong");
+                }
+            });
+        }
+
+        //$('#Loading').load = alert("Test") /*OnloadListLOA*/;
+        if (CheckEmptyObject() === true) {
+            OnloadListLOA();
+        } else {
+            console("Load complete");
+        }
+
+        function CheckEmptyObject() {
+            if ($('#ListLOA').text() === "") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    </script>
+}

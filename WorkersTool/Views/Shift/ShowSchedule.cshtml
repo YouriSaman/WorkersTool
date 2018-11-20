@@ -51,7 +51,7 @@
 <script>
     function LeaveOfAbsence(shiftId, userId) {
         $.ajax({
-            type: "POST",
+            type: "GET",
             url: "/Shift/LeaveOfAbsence",
             data: { shiftId: shiftId, userId: userId },
             dataType: "html",

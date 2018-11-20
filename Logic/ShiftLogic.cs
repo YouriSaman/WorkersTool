@@ -11,12 +11,14 @@ namespace Logic
         private ShiftContext _shiftContext = new ShiftContext();
         private WeekLogic _weekLogic = new WeekLogic();
         private DepartmentLogic _departmentLogic = new DepartmentLogic();
+        private LeaveOfAbsenceContext _leaveOfAbsenceContext = new LeaveOfAbsenceContext();
 
         public ShiftLogic()
         {
             _shiftContext = new ShiftContext();
             _weekLogic = new WeekLogic();
             _departmentLogic = new DepartmentLogic();
+            _leaveOfAbsenceContext = new LeaveOfAbsenceContext();
         }
 
         public Shift GetShiftById(int shiftId)
@@ -89,6 +91,38 @@ namespace Logic
             }
 
             return days;
+        }
+
+        public void AddLeaveOfAbsence(int shiftId, int userId, string reason)
+        {
+            _leaveOfAbsenceContext.AddLeaveOfAbsence(shiftId, userId, reason);
+        }
+
+        public void HideLeaveOfAbsence(int shiftId, int userId)
+        {
+            _leaveOfAbsenceContext.HideLeaveOfAbsence(shiftId, userId);
+        }
+
+        public List<int> GetHiddenShiftIdsOfUser(int userId)
+        {
+            return _leaveOfAbsenceContext.GetHiddenShiftIdsOfUser(userId);
+        }
+
+        public List<LeaveOfAbsence> GetLeaveOfAbsences(int userId)
+        {
+            var listAbsences = _leaveOfAbsenceContext.GetLeaveOfAbsences();
+            for (int i = 0; i < listAbsences.Count; i++)
+            {
+                foreach (var item in GetHiddenShiftIdsOfUser(userId))
+                {
+                    if (item == listAbsences[i].ShiftId)
+                    {
+                        listAbsences.Remove(listAbsences[i]);
+                    }
+                }
+            }
+
+            return listAbsences;
         }
     }
 }

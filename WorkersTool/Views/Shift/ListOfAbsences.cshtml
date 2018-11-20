@@ -1,0 +1,26 @@
+﻿@model ListOfAbsencesViewModel
+
+<ul class="list-group">
+    @foreach (var item in Model.LeaveOfAbsences)
+    {
+        <li class="list-group-item ah-light-background border-ah">
+            <h5 class="list-group-item-heading">@item.Shift.Account.Name ~ @item.Shift.Department.Name afdeling</h5>
+            @item.Shift.Date.ToString("dd/MM/yyyy")
+            @item.Shift.StartTime.ToString(@"hh\:mm") - @item.Shift.EndTime.ToString(@"hh\:mm")
+            
+            <form method="post" asp-action="HideLeaveOfAbsence">
+                <input hidden asp-for="ShiftId" value="@item.Shift.Id" />
+                <input hidden asp-for="UserId" value="@item.Shift.UserId" />
+
+                <button type="submit" class="btn btn-red btn-circle block-right margin-top-20 margin-left-right5"><span class="glyphicon glyphicon-remove"></span></button>
+            </form>
+            
+            <form method="post" asp-action="CheckLeaveOfAbsenceFromList">
+                <input hidden asp-for="ShiftId" value="@item.Shift.Id" />
+                <input hidden asp-for="UserId" value="@item.Shift.UserId" />
+
+                <button class="btn btn-green btn-circle block-right margin-top-20 margin-left-right5"><span class="glyphicon glyphicon-ok"></span></button>
+            </form>
+        </li>
+    }
+</ul>
