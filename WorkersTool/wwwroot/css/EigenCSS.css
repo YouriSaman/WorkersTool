@@ -19,6 +19,14 @@
     margin-top: 30px;
 }
 
+.margin-top60 {
+    margin-top: 60px;
+}
+
+.margin-top5 {
+    margin-top: 5px;
+}
+
 .margin-top-20 {
     margin-top: -35px;
 }
@@ -47,6 +55,25 @@
 
 .relative {
     position: relative;
+}
+
+/*Size*/
+.textarea-forum {
+    min-height: 100px;
+    max-height: 175px;
+}
+
+.textarea-forum-reply {
+    min-height: 125px;
+    max-height: 175px;
+}
+
+.size-forum-name {
+    font-size: 14px;
+}
+
+.size-forum-date {
+    font-size: 12px;
 }
 
 /*Color || Font*/
@@ -82,6 +109,9 @@
     border: 1px solid #00A0E2;
 }
 
+.forum-text {
+    background: #ccf0ff !important;
+}
 
 /*Custom panel AH*/
 .panel-ah {
@@ -136,6 +166,28 @@
 }
 
 /*Other || Bulky*/
+
+/*-Scrollbar-*/
+/* width */
+.custom-scrolbar::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.custom-scrolbar::-webkit-scrollbar-track {
+    background: #e6f7ff;
+}
+
+/* Handle */
+.custom-scrolbar::-webkit-scrollbar-thumb {
+    background: #00b3ff;
+}
+
+/* Handle on hover */
+.custom-scrolbar::-webkit-scrollbar-thumb:hover {
+    background: #00a0e2;
+}
+
 .nav-account {
     text-decoration: none;
     font-size: 20px;
@@ -148,15 +200,16 @@
     margin-top: 20px;
 }
 
-.registreer {
+.nav-btn {
     background: #00A0E2;
     width: 125px;
     height: 30px;
+    padding: 2px;
     color: white !important;
 }
 
-.registreer:hover {
-    background: #007db3;
+.nav-btn:hover {
+    background: #33c2ff;
     color: white;
     text-decoration: none;
 }
@@ -178,4 +231,26 @@
     border-radius: 10%;
     background: #ccf0ff;
     padding: 0 5px 25px;
+}
+
+.resize-vertical {
+    resize: vertical;
+}
+
+.forum-write {
+    border: 1px solid #b3e8ff;
+    border-radius: 2.5%;
+    padding: 10px;
+    background: #eef9ff;
+}
+
+.forum-read {
+    border-radius: 2.5%;
+    padding: 10px;
+    background: #eef9ff;
+}
+
+.img-person-forum {
+    border-radius: 50%;
+    height: 50px;
 }

@@ -29,6 +29,12 @@ namespace WorkersTool.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme).Wait();
+            return RedirectToAction("Index", "Home");
+        }
+
         public IActionResult Register()
         {
             return View();

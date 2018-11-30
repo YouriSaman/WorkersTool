@@ -31,23 +31,28 @@
                 <img src="~/images/WorkersToolNav.png" class="navbar-brand"/>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav navbar-nav margin-top5">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     
                 </ul>
                 @if (User.Identity.IsAuthenticated)
                 {
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Shift" asp-action="AddSchedule">Shifts toevoegen</a></li>
-                    <li><a asp-area="" asp-controller="Shift" asp-action="MySchedule">Mijn rooster</a></li>
-                </ul>
+                    <ul class="nav navbar-nav margin-top5">
+                        <li><a asp-area="" asp-controller="Shift" asp-action="AddSchedule">Shifts toevoegen</a></li>
+                        <li><a asp-area="" asp-controller="Shift" asp-action="MySchedule">Mijn rooster</a></li>
+                        <li><a asp-area="" asp-controller="Forum" asp-action="Index">Forum</a></li>
+                    </ul>
+                    <a asp-controller="Account" asp-action="Logout" class="navbar-right navbar-text nav-account nav-btn">Logout</a>
                 }
                 else
                 {
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav margin-top5">
                         <li><a asp-area="" asp-controller="Home" asp-action="Solliciteren">Solliciteren</a></li>
                     </ul>
-                    <a asp-controller="Account" asp-action="Register" class="navbar-right navbar-text nav-account registreer">Registreer</a>
+                    <ul class="nav navbar-nav navbar-right margin-top5">
+                        <li><a asp-area="" asp-controller="Home" asp-action="Index">Login</a></li>
+                    </ul>
+                    <a asp-controller="Account" asp-action="Register" class="navbar-right navbar-text nav-account nav-btn">Registreer</a>
                 }
             </div>
         </div>

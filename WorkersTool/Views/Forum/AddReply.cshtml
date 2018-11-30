@@ -1,0 +1,8 @@
+﻿@model AddReplyViewModel
+
+<form method="post" asp-action="AddReply">
+<input hidden asp-for="Reply.MessageId" value="@Model.Reply.MessageId"/>
+
+<textarea class="form-control resize-vertical textarea-forum forum-text custom-scrolbar" placeholder="Schrijf een bericht..." asp-for="Reply.Text"></textarea>
+<button type="submit" class="btn btn-ah float-right">Plaats</button>
+</form>
