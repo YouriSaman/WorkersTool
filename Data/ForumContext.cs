@@ -11,9 +11,36 @@ namespace Data
     {
         private string connectionstring = "Server=mssql.fhict.local;Database=dbi383661_extra;User Id=dbi383661_extra;Password=YouriS12;";
 
-        public void AddMessage(Message messag)
+        public int AddMessage(Message message)
         {
-            throw new NotImplementedException();
+            string query = "INSERT INTO Message(User_Id, Text, Likes)" +
+                           "VALUES(@UserId, @Text, @Likes);" +
+                           "SELECT @@IDENTITY AS NewId;";
+
+            using (var conn = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@UserId", message.UserId);
+                    cmd.Parameters.AddWithValue("@Text", message.Text);
+                    cmd.Parameters.AddWithValue("@Likes", 0);
+
+                    SqlDataReader rowsAffected = cmd.ExecuteReader();
+
+                    int messageId = 0;
+
+                    while (rowsAffected.Read())
+                    {
+                        var decimalId = (decimal)rowsAffected["NewId"];
+
+                        messageId = Convert.ToInt32(decimalId);
+                    }
+                    conn.Close();
+
+                    return messageId;
+                }
+            }
         }
 
         public void AddReply(Reply reply)

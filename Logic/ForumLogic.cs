@@ -16,6 +16,11 @@ namespace Logic
             forumContext = new ForumContext();
         }
 
+        public int AddMessage(Message message)
+        {
+            return forumContext.AddMessage(message);
+        }
+
         public void AddReply(Reply reply)
         {
             forumContext.AddReply(reply);

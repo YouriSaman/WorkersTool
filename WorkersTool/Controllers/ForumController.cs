@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Logic;
+﻿using Logic;
 using Microsoft.AspNetCore.Mvc;
 using Models;
+using System;
+using System.Linq;
 using WorkersTool.ViewModels;
 
 namespace WorkersTool.Controllers
@@ -20,16 +18,28 @@ namespace WorkersTool.Controllers
             return View(viewModel);
         }
 
-        public IActionResult IndexWithId(Reply reply)
+        public IActionResult IndexWithId(int messageId)
         {
             var viewModel = new ForumIndexViewModel();
             viewModel.Messages = forumLogic.GetAllMessages();
-            return Redirect($"{Url.Action("Index", new { ForumIndexViewModel = viewModel })}#" + reply.MessageId);
+            return Redirect($"{Url.Action("Index", new { ForumIndexViewModel = viewModel })}#" + messageId);
+        }
+
+        [HttpPost]
+        public IActionResult AddMessage(ForumIndexViewModel viewModel)
+        {
+            var userId = Convert.ToInt32(Convert.ToString(User.Claims.Where(claim => claim.Type == "Id").Select(claim => claim.Value).SingleOrDefault()));
+            var message = viewModel.Message;
+            message.UserId = userId;
+
+            var messageId = forumLogic.AddMessage(message);
+
+            return RedirectToAction("IndexWithId", new{messageId = messageId});
         }
 
         public IActionResult AddReply(int messageId)
         {
-            var viewModel = new AddReplyViewModel {Reply = new Reply() {MessageId = messageId}};
+            var viewModel = new AddReplyViewModel() {Reply = new Reply() {MessageId = messageId}};
             return PartialView(viewModel);
         }
 
@@ -41,8 +51,9 @@ namespace WorkersTool.Controllers
             reply.UserId = userId;
             
             forumLogic.AddReply(reply);
+            var messageId = reply.MessageId;
 
-            return RedirectToAction("IndexWithId", reply);
+            return RedirectToAction("IndexWithId", new {messageId = messageId});
         }
     }
 }

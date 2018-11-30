@@ -10,8 +10,7 @@ namespace WorkersTool.ViewModels
     public class ForumIndexViewModel
     {
         public List<Message> Messages { get; set; }
-
-
+        public Message Message { get; set; }
 
         public IFormFile Image { get; set; }
     }
