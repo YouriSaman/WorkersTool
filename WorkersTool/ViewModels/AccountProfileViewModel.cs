@@ -7,10 +7,10 @@ using Models;
 
 namespace WorkersTool.ViewModels
 {
-    public class RegisterUserViewModel
+    public class AccountProfileViewModel
     {
-        public User User { get; set; }
         public Account Account { get; set; }
+        public User User { get; set; }
         public IFormFile AccountImage { get; set; }
     }
 }

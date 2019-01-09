@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using IContext;
 using Models;
 
 namespace Data
 {
-    public class ShiftContext
+    public class ShiftSqlContext:IShiftContext
     {
         private string connectionstring = "Server=mssql.fhict.local;Database=dbi383661_extra;User Id=dbi383661_extra;Password=YouriS12;";
 
@@ -105,6 +106,82 @@ namespace Data
                         }
 
                         return shifts;
+                    }
+                }
+            }
+        }
+        
+        public List<int> GetShiftIdsOfUser(int userId)
+        {
+            string query = "SELECT Id FROM [Shift] WHERE User_Id= @UserId";
+            var ids = new List<int>();
+
+            using (var conn = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var id = (int)reader["Id"];
+                            ids.Add(id);
+                        }
+
+                        return ids;
+                    }
+                }
+            }
+        }
+
+        public List<int> GetAllShiftIds()
+        {
+            string query = "SELECT Id FROM [Shift]";
+            var ids = new List<int>();
+
+            using (var conn = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var id = (int)reader["Id"];
+                            ids.Add(id);
+                        }
+
+                        return ids;
+                    }
+                }
+            }
+        }
+
+        public int GetUserIdOfShift(int shiftId)
+        {
+            string query = "SELECT User_Id FROM Shift WHERE Id= @ShiftId";
+            int userId = 0;
+
+            using (var conn = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@ShiftId", shiftId);
+
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            userId = (int) reader["User_Id"];
+                        }
+
+                        return userId;
                     }
                 }
             }

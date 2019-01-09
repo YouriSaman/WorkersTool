@@ -8,6 +8,5 @@ namespace Models
     {
         public int Weeknumber { get; set; }
         public DateTime From { get; set; }
-        public DateTime Till { get; set; }
     }
 }

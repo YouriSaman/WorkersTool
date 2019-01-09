@@ -15,5 +15,6 @@ namespace Models
         public string Adress { get; set; }
         public string Postalcode { get; set; }
         public string Residence { get; set; }
+        public string Image { get; set; }
     }
 }

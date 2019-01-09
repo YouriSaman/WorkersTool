@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Net.Http.Headers;
 using System.Text;
+using IContext;
 using Models;
 
 namespace Data
 {
-    public class ForumContext
+    public class ForumSqlContext:IForumContext
     {
         private string connectionstring = "Server=mssql.fhict.local;Database=dbi383661_extra;User Id=dbi383661_extra;Password=YouriS12;";
 
@@ -63,14 +65,36 @@ namespace Data
             }
         }
 
-        public void DeleteMessage(Message message)
+        public void DeleteMessage(int messageId, int userId)
         {
-            throw new NotImplementedException();
+            using (var conn = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand("dbo.spDeleteMessage", conn))
+                {
+                    conn.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@MessageId", messageId);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
-        public void DeleteReply(Reply reply)
+        public void DeleteReply(int replyId, int userId)
         {
-            throw new NotImplementedException();
+            using (var conn = new SqlConnection(connectionstring))
+            {
+                using (var cmd = new SqlCommand("dbo.spDeleteReply", conn))
+                {
+                    conn.Open();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@MessageId", replyId);
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public List<Message> GetAllMessagesWithoutMedia()
@@ -90,7 +114,8 @@ namespace Data
                             var message = new Message()
                             {
                                 Id = (int)reader["Id"],
-                                Text = (string)reader["Text"]
+                                Text = (string)reader["Text"],
+                                UserId = (int)reader["User_Id"]
                             };
                             messages.Add(message);
                         }
@@ -120,7 +145,8 @@ namespace Data
                             {
                                 Id = (int)reader["Id"],
                                 Text = (string)reader["Text"],
-                                MediaUrl = (string)reader["Media"]
+                                MediaUrl = (string)reader["Media"],
+                                UserId = (int)reader["User_Id"]
                             };
                             messages.Add(message);
                         }
@@ -148,8 +174,10 @@ namespace Data
                         {
                             var reply = new Reply()
                             {
+                                Id = (int)reader["Id"],
                                 Text = (string)reader["Text"],
-                                MessageId = (int)reader["Message_Id"]
+                                MessageId = (int)reader["Message_Id"],
+                                UserId = (int)reader["User_Id"]
                             };
                             replies.Add(reply);
                         }

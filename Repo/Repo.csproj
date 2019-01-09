@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Models\Models.csproj" />
-    <ProjectReference Include="..\Repo\Repo.csproj" />
+    <ProjectReference Include="..\Data\SqlData.csproj" />
+    <ProjectReference Include="..\IContext\IContext.csproj" />
   </ItemGroup>
 
 </Project>

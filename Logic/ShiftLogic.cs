@@ -1,29 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using Data;
 using Models;
+using Repo;
 
 namespace Logic
 {
     public class ShiftLogic
     {
-        private ShiftContext _shiftContext = new ShiftContext();
+        private ShiftRepo _shiftRepo = new ShiftRepo(Context.Mssql);
         private WeekLogic _weekLogic = new WeekLogic();
         private DepartmentLogic _departmentLogic = new DepartmentLogic();
-        private LeaveOfAbsenceContext _leaveOfAbsenceContext = new LeaveOfAbsenceContext();
-
-        public ShiftLogic()
-        {
-            _shiftContext = new ShiftContext();
-            _weekLogic = new WeekLogic();
-            _departmentLogic = new DepartmentLogic();
-            _leaveOfAbsenceContext = new LeaveOfAbsenceContext();
-        }
-
+        private AccountLogic _accountLogic = new AccountLogic();
+        private LeaveOfAbsenceRepo _leaveOfAbsenceRepo = new LeaveOfAbsenceRepo(Context.Mssql);
+        
         public Shift GetShiftById(int shiftId)
         {
-            return _shiftContext.GetShiftById(shiftId);
+            return _shiftRepo.GetShiftById(shiftId);
+        }
+
+        public List<Shift> GetShiftsByIds(List<int> shiftIds)
+        {
+            var shifts = new List<Shift>();
+            foreach (var shiftId in shiftIds)
+            {
+                var shift = GetShiftById(shiftId);
+                shifts.Add(shift);
+            }
+
+            return shifts;
         }
 
         public List<Day> GiveDatesOfWeek(Week week)
@@ -61,10 +67,15 @@ namespace Logic
                     if (shift.StartTime < shift.EndTime)
                     {
                         shift.Weeknumber = weeknumber;
-                        _shiftContext.AddShift(shift);
+                        _shiftRepo.AddShift(shift);
                     }
                 }
             }
+        }
+
+        public int GetUserIdOfShift(int shiftId)
+        {
+            return _shiftRepo.GetUserIdOfShift(shiftId);
         }
 
         public string ConverTimeSpan(TimeSpan time)
@@ -76,7 +87,7 @@ namespace Logic
         {
             var week = _weekLogic.GetWeekByNumber(weeknumber);
             var days = GiveDatesOfWeek(week);
-            var shifts = _shiftContext.GetShiftsOfWeekFromUser(weeknumber, userId);
+            var shifts = _shiftRepo.GetShiftsOfWeekFromUser(weeknumber, userId);
             foreach (var shift in shifts)
             {
                 for (int i = 0; i < days.Count; i++)
@@ -95,34 +106,115 @@ namespace Logic
 
         public void AddLeaveOfAbsence(int shiftId, int userId, string reason)
         {
-            _leaveOfAbsenceContext.AddLeaveOfAbsence(shiftId, userId, reason);
+            _leaveOfAbsenceRepo.AddLeaveOfAbsence(shiftId, userId, reason);
         }
 
-        public void HideLeaveOfAbsence(int shiftId, int userId)
+        public void HideLeaveOfAbsence(int leaveOfAbsenceId, int userId)
         {
-            _leaveOfAbsenceContext.HideLeaveOfAbsence(shiftId, userId);
+            _leaveOfAbsenceRepo.HideLeaveOfAbsence(leaveOfAbsenceId, userId);
         }
 
-        public List<int> GetHiddenShiftIdsOfUser(int userId)
+        public List<int> GetHiddenLOAIdsOfUser(int userId)
         {
-            return _leaveOfAbsenceContext.GetHiddenShiftIdsOfUser(userId);
+            return _leaveOfAbsenceRepo.GetHiddenLOAIdsOfUser(userId);
+        }
+
+        public List<int> GetShiftIdsOfUser(int userId)
+        {
+            return _shiftRepo.GetShiftIdsOfUser(userId);
+        }
+
+        public List<int> GetAllShiftIds()
+        {
+            return _shiftRepo.GetAllShiftIds();
+        }
+
+        public void AcceptLeaveOfAbsence(int leaveOfAbsenceId, int userId)
+        {
+            _leaveOfAbsenceRepo.AcceptLeaveOfAbsence(leaveOfAbsenceId, userId);
+            _leaveOfAbsenceRepo.HideLeaveOfAbsence(leaveOfAbsenceId, userId);
         }
 
         public List<LeaveOfAbsence> GetLeaveOfAbsences(int userId)
         {
-            var listAbsences = _leaveOfAbsenceContext.GetLeaveOfAbsences();
+            var listAbsences = _leaveOfAbsenceRepo.GetLeaveOfAbsences();
             for (int i = 0; i < listAbsences.Count; i++)
             {
-                foreach (var item in GetHiddenShiftIdsOfUser(userId))
+                //Hidden aanvragen niet tonen
+                foreach (var hiddenLoaId in GetHiddenLOAIdsOfUser(userId))
                 {
-                    if (item == listAbsences[i].ShiftId)
+                    if (hiddenLoaId == listAbsences[i].Id)
                     {
                         listAbsences.Remove(listAbsences[i]);
                     }
                 }
+
+                //Geen aanvragen van User zelf tonen
+                if (listAbsences.Count != 0)
+                {
+                    foreach (var shiftId in GetShiftIdsOfUser(userId))
+                    {
+                        if (listAbsences.Count != 0)
+                        {
+                            if (shiftId == listAbsences[i].ShiftId)
+                            {
+                                listAbsences.Remove(listAbsences[i]);
+                            }
+                        }
+                    }
+                }
+
+                ////Oude aanvragen niet meer tonen ---> Misschien gewoon verwijderen na 1 week in Database
+                //if (listAbsences.Count != 0)
+                //{
+                //    foreach (var shiftById in GetShiftsByIds(GetAllShiftIds()))
+                //    {
+                //        if (listAbsences.Count != 0)
+                //        {
+                //            if (shiftById.Id == listAbsences[i].ShiftId)
+                //            {
+                //                if (shiftById.Date < DateTime.Now)
+                //                {
+                //                    listAbsences.Remove(listAbsences[i]);
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
             }
 
             return listAbsences;
+        }
+
+        public List<LeaveOfAbsence> GetLeaveOfAbsencesWithApproval()
+        {
+            return _leaveOfAbsenceRepo.GetLeaveOfAbsencesWithApproval();
+        }
+
+        public List<LeaveOfAbsence> GetLeaveOfAbsences()
+        {
+            var leaveOfAbsences = GetLeaveOfAbsencesWithApproval();
+
+            foreach (var leaveOfAbsence in leaveOfAbsences)
+            {
+                int userIdOfShift = GetUserIdOfShift(leaveOfAbsence.Shift.Id);
+                leaveOfAbsence.Shift.Account = _accountLogic.GetAccountByUserId(userIdOfShift);
+                int newUserId = leaveOfAbsence.NewUserId;
+                leaveOfAbsence.AccountOfNewUser = _accountLogic.GetAccountByUserId(newUserId);
+            }
+
+            return leaveOfAbsences;
+        }
+
+        public void ApproveLeaveOfAbsence(int newUserId, int leaveOfAbsenceId, int shiftId)
+        {
+            _leaveOfAbsenceRepo.ApproveLeaveOfAbsence(newUserId, leaveOfAbsenceId);
+            _leaveOfAbsenceRepo.ChangeUserToShift(newUserId, shiftId);
+        }
+
+        public void DisapproveLeaveOfAbsence(int newUserId, int leaveOfAbsenceId)
+        {
+            _leaveOfAbsenceRepo.DisapproveLeaveOfAbsence(newUserId, leaveOfAbsenceId);
         }
     }
 }

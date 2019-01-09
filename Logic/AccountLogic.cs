@@ -4,64 +4,68 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using Data;
 using Models;
+using Repo;
 
 namespace Logic
 {
     public class AccountLogic
     {
-        private AccountContext _accountContext;
+        private AccountRepo _accountRepo = new AccountRepo(Context.Mssql);
+        //private AccountDAO _accountDao;
+        private UserLogic _userLogic;
 
         public AccountLogic()
         {
-            _accountContext = new AccountContext();
+            //_accountDao = new AccountDAO();
+            _userLogic = new UserLogic();
         }
 
         public void AddBrach(Branch branch, Account account)
         {
-            branch.AccountId = _accountContext.AddAccount(account);
-            _accountContext.AddBranch(branch);
+            branch.AccountId = _accountRepo.AddAccount(account);
+            _accountRepo.AddBranch(branch);
         }
 
-        public void AddUser(User user, Account account)
+        public void AddAccount(User user, Account account)
         {
-            user.AccountId = _accountContext.AddAccount(account);
-            _accountContext.AddUser(user);
+            user.AccountId = _accountRepo.AddAccount(account);
+            _userLogic.AddUser(user);
         }
 
         public bool LoginCheck(Account account)
         {
-            return _accountContext.LoginCheck(account);
+            return _accountRepo.LoginCheck(account);
         }
 
         public List<Account> GetAllAccounts()
         {
-            return _accountContext.GetAllAccounts();
+            return _accountRepo.GetAllAccounts();
         }
 
         public Account GetAccountByUsername(string username)
         {
-            return _accountContext.GetAccountByUsername(username);
+            return _accountRepo.GetAccountByUsername(username);
         }
 
         public Account GetAccountById(int accountId)
         {
-            return _accountContext.GetAccountById(accountId);
+            return _accountRepo.GetAccountById(accountId);
+        }
+
+        public int GetAccountIdByUserId(int userId)
+        {
+           return _accountRepo.GetAccountIdByUserId(userId);
         }
 
         public Account GetAccountByUserId(int userId)
         {
-            int accountId = _accountContext.GetAccountIdByUserId(userId);
+            int accountId = GetAccountIdByUserId(userId);
             return GetAccountById(accountId);
         }
 
         public List<User> GetAllUsers()
         {
-            return _accountContext.GetAllUsers();
-        }
-
-        public User GetUserByAccountId(int accountId)
-        {
-            return _accountContext.GetUserByAccountId(accountId);
+            return _userLogic.GetAllUsers();
         }
 
         public List<User> GetAllUsersWithAccounts()
@@ -75,6 +79,11 @@ namespace Logic
             }
 
             return userAccounts;
+        }
+
+        public void EditAccount(Account account)
+        {
+            _accountRepo.EditAccount(account);
         }
     }
 }

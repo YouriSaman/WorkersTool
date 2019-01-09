@@ -2,18 +2,19 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
+using IContext;
 using Models;
 
 namespace Data
 {
-    public class WeekContext
+    public class DepartmentSqlContext:IDepartmentContext
     {
         private string connectionstring = "Server=mssql.fhict.local;Database=dbi383661_extra;User Id=dbi383661_extra;Password=YouriS12;";
 
-        public List<Week> GetAllWeeks()
+        public List<Department> GetAllDepartments()
         {
-            string query = "SELECT * From Week";
-            var weeks = new List<Week>();
+            string query = "SELECT * FROM Department";
+            var departments = new List<Department>();
 
             using (var conn = new SqlConnection(connectionstring))
             {
@@ -24,45 +25,44 @@ namespace Data
                     {
                         while (reader.Read())
                         {
-                            var week = new Week()
+                            var department = new Department()
                             {
-                                Weeknumber = (int)reader["Weeknumber"],
-                                From = (DateTime)reader["From"],
-                                Till = (DateTime)reader["Till"]
+                                Id = (int)reader["Id"],
+                                Name = (string)reader["Name"]
                             };
-                            weeks.Add(week);
+                            departments.Add(department);
                         }
 
-                        return weeks;
+                        return departments;
                     }
                 }
             }
         }
 
-        public Week GetWeekByNumber(int weeknumber)
+        public Department GetDepartmentById(int departmentId)
         {
-            string query = "SELECT * FROM Week WHERE Weeknumber=@Weeknumber";
-            var week = new Week();
+            string query = "SELECT * FROM Department WHERE Id = @Id";
+            var department = new Department();
+
             using (var conn = new SqlConnection(connectionstring))
             {
                 using (var cmd = new SqlCommand(query, conn))
                 {
                     conn.Open();
-                    cmd.Parameters.AddWithValue("@Weeknumber", weeknumber);
+                    cmd.Parameters.AddWithValue("@Id", departmentId);
                     using (var reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            week = new Week()
+                            department = new Department()
                             {
-                                Weeknumber = (int)reader["Weeknumber"],
-                                From = (DateTime)reader["From"],
-                                Till = (DateTime)reader["Till"]
+                                Id = (int)reader["Id"],
+                                Name = (string)reader["Name"]
                             };
                         }
+                        return department;
                     }
 
-                    return week;
                 }
             }
         }

@@ -55,5 +55,21 @@ namespace WorkersTool.Controllers
 
             return RedirectToAction("IndexWithId", new {messageId = messageId});
         }
+
+        public IActionResult DeleteMessage(ForumIndexViewModel viewModel)
+        {
+            var userId = Convert.ToInt32(Convert.ToString(User.Claims.Where(claim => claim.Type == "Id").Select(claim => claim.Value).SingleOrDefault()));
+            var messageId = viewModel.MessageId;
+            forumLogic.DeleteMessage(messageId, userId);
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult DeleteReply(ForumIndexViewModel viewModel)
+        {
+            var userId = Convert.ToInt32(Convert.ToString(User.Claims.Where(claim => claim.Type == "Id").Select(claim => claim.Value).SingleOrDefault()));
+            var replyId = viewModel.ReplyId;
+            forumLogic.DeleteReply(replyId, userId);
+            return RedirectToAction("Index");
+        }
     }
 }

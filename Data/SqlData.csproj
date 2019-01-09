@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\IContext\IContext.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
   </ItemGroup>
 

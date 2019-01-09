@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using IContext;
 using Models;
 
 namespace Data
 {
-    public class AccountContext
+    public class AccountSqlContext: IAccountContext
     {
         private string connectionstring = "Server=mssql.fhict.local;Database=dbi383661_extra;User Id=dbi383661_extra;Password=YouriS12;";
 
         public int AddAccount(Account account)
         {
-            string query = "INSERT INTO Account (Username, Password, Email, Name, Phonenumber, Adress, Postalcode, Residence)" +
-                           "VALUES (@Username, @Password, @Email, @Name, @Phonenumber, @Adress, @Postalcode, @Residence);" +
+            string query = "INSERT INTO Account (Username, Password, Email, Name, Phonenumber, Adress, Postalcode, Residence, Image)" +
+                           "VALUES (@Username, @Password, @Email, @Name, @Phonenumber, @Adress, @Postalcode, @Residence, @Image);" +
                            "SELECT @@IDENTITY AS NewId;";
 
             using (var conn = new SqlConnection(connectionstring))
@@ -29,6 +30,7 @@ namespace Data
                     cmd.Parameters.AddWithValue("@Adress", account.Adress);
                     cmd.Parameters.AddWithValue("@Postalcode", account.Postalcode);
                     cmd.Parameters.AddWithValue("@Residence", account.Residence);
+                    cmd.Parameters.AddWithValue("@Image", account.Image);
 
                     try
                     {
@@ -74,25 +76,6 @@ namespace Data
             }
         }
 
-        public void AddUser(User user)
-        {
-            string query = "INSERT INTO [User](Birthday, Gender, Account_Id)" +
-                           "VALUES (@Birthday, @Gender, @AccountId)";
-
-            using (var conn = new SqlConnection(connectionstring))
-            {
-                using (var cmd = new SqlCommand(query, conn))
-                {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@Birthday", user.Birthday);
-                    cmd.Parameters.AddWithValue("@Gender", user.Gender);
-                    cmd.Parameters.AddWithValue("@AccountId", user.AccountId);
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
         public bool LoginCheck(Account account)
         {
             string query = "SELECT * FROM Account WHERE Username=@Username AND Password=@Password";
@@ -118,12 +101,27 @@ namespace Data
 
         public void EditAccount(Account account)
         {
-            throw new NotImplementedException();
-        }
+            string query = "UPDATE Account SET Username = @Username, Password= @Password, Email= @Email, Name= @Name, Phonenumber = @Phonenumber, Adress= @Adress, Postalcode= @Postalcode, Residence= @Residence, Image= @Image WHERE Id= @AccountId";
 
-        public void EditUser(User user)
-        {
-            throw new NotImplementedException();
+            using (var conn = new SqlConnection(connectionstring))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    conn.Open();
+                    cmd.Parameters.AddWithValue("@Username", account.Username);
+                    cmd.Parameters.AddWithValue("@Password", account.Password);
+                    cmd.Parameters.AddWithValue("@Email", account.Email);
+                    cmd.Parameters.AddWithValue("@Name", account.Name);
+                    cmd.Parameters.AddWithValue("@Phonenumber", account.Phonenumber);
+                    cmd.Parameters.AddWithValue("@Adress", account.Adress);
+                    cmd.Parameters.AddWithValue("@Postalcode", account.Postalcode);
+                    cmd.Parameters.AddWithValue("@Residence", account.Residence);
+                    cmd.Parameters.AddWithValue("@AccountId", account.Id);
+                    cmd.Parameters.AddWithValue("@Image", account.Image);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         public List<Account> GetAllAccounts()
@@ -150,7 +148,8 @@ namespace Data
                                 Phonenumber = (string)reader["Phonenumber"],
                                 Adress = (string)reader["Adress"],
                                 Postalcode = (string)reader["Postalcode"],
-                                Residence = (string)reader["Residence"]
+                                Residence = (string)reader["Residence"],
+                                Image = (string)reader["Image"]
                             };
 
                             accounts.Add(account);
@@ -162,38 +161,6 @@ namespace Data
                 }
             }
 
-        }
-
-        public List<User> GetAllUsers()
-        {
-            string query = "SELECT * FROM [User]";
-            var users = new List<User>();
-
-            using (var conn = new SqlConnection(connectionstring))
-            {
-                using (var cmd = new SqlCommand(query, conn))
-                {
-                    conn.Open();
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var user = new User()
-                            {
-                                Id = (int)reader["Id"],
-                                Birthday = (DateTime)reader["Birthday"],
-                                Gender = (string)reader["Gender"],
-                                Rights = (bool)reader["Rights"],
-                                AccountId = (int)reader["Account_Id"]
-                            };
-
-                            users.Add(user);
-                        }
-
-                        return users;
-                    }
-                }
-            }
         }
 
         public Account GetAccountByUsername(string username)
@@ -222,7 +189,8 @@ namespace Data
                                 Phonenumber = (string)reader["Phonenumber"],
                                 Adress = (string)reader["Adress"],
                                 Postalcode = (string)reader["Postalcode"],
-                                Residence = (string)reader["Residence"]
+                                Residence = (string)reader["Residence"],
+                                Image = (string)reader["Image"]
                             };
                         }
 
@@ -258,7 +226,8 @@ namespace Data
                                 Phonenumber = (string)reader["Phonenumber"],
                                 Adress = (string)reader["Adress"],
                                 Postalcode = (string)reader["Postalcode"],
-                                Residence = (string)reader["Residence"]
+                                Residence = (string)reader["Residence"],
+                                Image = (string)reader["Image"]
                             };
                         }
 
@@ -289,38 +258,6 @@ namespace Data
                     }
 
                     return accountId;
-                }
-            }
-        }
-
-        public User GetUserByAccountId(int accountId)
-        {
-            string query = "SELECT * FROM [User] WHERE Account_Id= @AccountId";
-            var user = new User();
-
-            using (var conn = new SqlConnection(connectionstring))
-            {
-                using (var cmd = new SqlCommand(query, conn))
-                {
-                    conn.Open();
-                    cmd.Parameters.AddWithValue("@AccountId", accountId);
-
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            user = new User()
-                            {
-                                Id = (int)reader["Id"],
-                                Birthday = (DateTime)reader["Birthday"],
-                                Gender = (string)reader["Gender"],
-                                Rights = (bool)reader["Rights"],
-                                AccountId = (int)reader["Account_Id"]
-                            };
-                        }
-
-                        return user;
-                    }
                 }
             }
         }

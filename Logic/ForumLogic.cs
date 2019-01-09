@@ -2,37 +2,37 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Data;
 using Models;
+using Repo;
 
 namespace Logic
 {
     public class ForumLogic
     {
-        private ForumContext forumContext;
-
-        public ForumLogic()
-        {
-            forumContext = new ForumContext();
-        }
+        //private ForumSqlContext _forumDao;
+        private ForumRepo _forumRepo = new ForumRepo(Context.Mssql);
+        private AccountLogic accountLogic = new AccountLogic();
 
         public int AddMessage(Message message)
         {
-            return forumContext.AddMessage(message);
+            return _forumRepo.AddMessage(message);
         }
 
         public void AddReply(Reply reply)
         {
-            forumContext.AddReply(reply);
+            _forumRepo.AddReply(reply);
         }
 
         public List<Message> GetAllMessages()
         {
-            var allMessages = new List<Message>();
-            var messagesWithMedia = forumContext.GetAllMessagesWithMedia();
-            var messagesWithoutMedia = forumContext.GetAllMessagesWithoutMedia();
+            var messagesWithMedia = _forumRepo.GetAllMessagesWithMedia();
+            var messagesWithoutMedia = _forumRepo.GetAllMessagesWithoutMedia();
 
-            allMessages = messagesWithMedia.Concat(messagesWithoutMedia).ToList();
+            var allMessages = messagesWithMedia.Concat(messagesWithoutMedia).ToList();
+            foreach (var message in allMessages)
+            {
+                message.Account = accountLogic.GetAccountByUserId(message.UserId);
+            }
             var replies = GetAllReplies();
             for (int i = 0; i < replies.Count; i++)
             {
@@ -50,7 +50,23 @@ namespace Logic
 
         public List<Reply> GetAllReplies()
         {
-            return forumContext.GetAllReplies();
+            var replies = _forumRepo.GetAllReplies();
+            foreach (var reply in replies)
+            {
+                reply.Account = accountLogic.GetAccountByUserId(reply.UserId);
+            }
+
+            return replies;
+        }
+
+        public void DeleteMessage(int messageId, int userId)
+        {
+            _forumRepo.DeleteMessage(messageId, userId);
+        }
+
+        public void DeleteReply(int replyId, int userId)
+        {
+            _forumRepo.DeleteReply(replyId, userId);
         }
     }
 }

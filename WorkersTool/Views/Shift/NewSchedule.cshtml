@@ -18,29 +18,31 @@
                         <td class="padding-left-right10">
                             @for (int j = 0; j < 1; j++) //1 moet counter worden aan de hand van shifts al meerdere shifts op een dag kunnen
                             {
-                                <div class="shift-part">
-                                    <input hidden type="datetime" asp-for="@Model.Days[i].Shifts[j].Date" value="@Model.Days[i].Date" />
-                                    <input hidden type="number" asp-for="Weeknumber" value="@Model.Weeknumber" />
-                                    <input class="InputUserId" hidden type="number" asp-for="@Model.Days[i].Shifts[j].UserId" value="0" />
-                                    <select class="form-control" asp-for="@Model.Days[i].Shifts[j].Department.Id">
-                                        @foreach (var department in Model.Departments)
-                                        {
-                                            <option value="@department.Id">@department.Name</option>
-                                        }
-                                    </select>
-                                    <div class="input-group">
-                                        <input class="form-control" type="time" asp-for="@Model.Days[i].Shifts[j].StartTime" />
-                                        <span class="input-group-addon ah-background">
-                                            <span class="color-white font-size11"><b>tot</b></span>
-                                        </span>
-                                    </div>
-                                    <div class="input-group">
-                                        <input class="form-control" type="time" asp-for="@Model.Days[i].Shifts[j].EndTime" />
-                                        <span class="input-group-addon ah-background">
-                                            <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
-                                        </span>
-                                    </div>
+                            <div class="shift-part">
+                                <input hidden type="datetime" asp-for="@Model.Days[i].Shifts[j].Date" value="@Model.Days[i].Date" />
+                                <input hidden type="number" asp-for="Weeknumber" value="@Model.Weeknumber" />
+                                <input class="InputUserId" hidden type="number" asp-for="@Model.Days[i].Shifts[j].UserId" value="0" />
+                                <select class="form-control" asp-for="@Model.Days[i].Shifts[j].Department.Id">
+                                    @foreach (var department in Model.Departments)
+        {
+                            <option value="@department.Id">@department.Name</option>
+}
+                                </select>
+                                <div class="input-group">
+                                    <span class="input-group-addon ah-background">
+                                        <span class="color-white font-size11"><b>Van</b></span>
+                                    </span>
+                                    <input id="inputStart_@i@j" class="form-control input-begin" type="time" onchange="ChangeInputBegin(@i,@j)" asp-for="@Model.Days[i].Shifts[j].StartTime" />
+
                                 </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon ah-background">
+                                        <span class="color-white font-size11"><b>Tot</b></span>
+                                    </span>
+                                    <input id="inputEnd_@i@j" class="form-control" type="time" onchange="ChangeInputBackground(@i,@j)" asp-for="@Model.Days[i].Shifts[j].EndTime" />
+                                </div>
+                                @*<button class="btn btn-ah margin-none float-right"><span class="glyphicon glyphicon-plus"></span></button>*@ @*---Geen extra plus shift al er tijden zijn ingevuld voor die dag---*@
+                            </div>
 
                                 @*<div class="shift-part-next">   --- Latere toevoeging als één shift toevoegen al goed lukt en alles daaromheen ---
                                     <div class="input-group">
@@ -55,7 +57,7 @@
                                             <a class="white-link"><span class="glyphicon glyphicon-plus"></span></a>
                                         </span>
                                     </div>
-                                    </div>*@
+                                </div>*@
                             }
                         </td>
                     }
@@ -63,4 +65,35 @@
             </table>
         </div>
 <button class="btn btn-ah float-right" type="submit">Opslaan!</button>
+
+<script>
+    function ChangeInputBackground(dayNr, shiftNr) {
+        var idStart = "#inputStart_" + dayNr + shiftNr;
+        var idEnd = "#inputEnd_" + dayNr + shiftNr;
+        $(idStart).addClass('inputDateBackground');
+        $(idEnd).addClass('inputDateBackground');
+        ResetInputBackground(idStart, idEnd);
+    }
+
+    function ResetInputBackground(idStart, idEnd) {
+        if ($(idStart).val() === $(idEnd).val()) {
+            $(idStart).removeClass('inputDateBackground');
+            $(idEnd).removeClass('inputDateBackground');
+        }
+    }
+
+    function ChangeInputBegin(dayNr, shiftNr)
+    {
+        ChangeInputBackground(dayNr, shiftNr);
+        var idStart = "#inputStart_" + dayNr + shiftNr;
+        var idEnd = "#inputEnd_" + dayNr + shiftNr;
+        var value = $(idStart).val() + ":00";
+        $(idEnd).attr({"min": value, "max" : "23:59:00"});
+        $(idEnd).val(value);
+    }
+
+    function AlertInputChanged() {
+        alert("Er is een aanpassing in het rooster, als je doorgaat zijn de wijzigingen niet opgelagen!");
+    }
+</script>
 

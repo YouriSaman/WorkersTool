@@ -3,12 +3,14 @@
 <div class="margin-top30 panel panel-ah">
     <div class="panel-heading">Registreer een gebruiker</div>
     <div class="panel-body">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div class="col-md-5">
                 <label>Naam:</label>
                 <input class="form-control" type="text" asp-for="Account.Name"/>
                 <label>Gebruikersnaam:</label>
                 <input class="form-control" type="text" asp-for="Account.Username"/>
+                <label>Profielfoto:</label>
+                <input asp-for="AccountImage" type="file"/>
                 <label>Wachtwoord:</label>
                 <input class="form-control" type="password" asp-for="Account.Password"/>
                 <label>Email:</label>
@@ -28,9 +30,9 @@
                 <input class="form-control" type="text" asp-for="Account.Phonenumber"/>
                 <label>Geslacht</label>
                 <select class="form-control" asp-for="User.Gender">
-                    <option value="Man">Man</option>
-                    <option value="Vrouw">Vrouw</option>
-                    <option value="Overig">Overig</option>
+                    <option value="1">Man</option>
+                    <option value="2">Vrouw</option>
+                    <option value="3">Overig</option>
                 </select>
             </div>
 

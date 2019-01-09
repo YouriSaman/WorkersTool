@@ -1,0 +1,50 @@
+﻿@using Models
+@model AcceptableLeaveOfAbsencesViewModel
+
+<h1 class="text-center">Overnames van afwezigheidsaanvragen goedkeuren</h1>
+<div class="row">
+<div class="col-md-3"></div>
+<div class="col-md-6">
+<ul class="list-group">
+    @foreach (var item in Model.LeaveOfAbsences)
+    {
+        <li class="list-group-item ah-light-background border-ah">
+            <h5 class="list-group-item-heading">Overname door: @item.AccountOfNewUser.Name</h5> <br/>
+            <h5 class="list-group-item-heading">@item.Shift.Account.Name ~ @item.Shift.Department.Name afdeling</h5>
+            @item.Shift.Date.ToString("dd/MM/yyyy")
+            @item.Shift.StartTime.ToString(@"hh\:mm") - @item.Shift.EndTime.ToString(@"hh\:mm")
+
+            <form method="post" asp-action="ApproveLeaveOfAbsence">
+                @*@if (item.IsApproved == LeaveOfAbsence.Approved.Approved)
+                {
+                    <p title="Afwezigheidsverzoek is goedgekeurd" class="block-right margin-top-20 margin-left-right5 p-approved"><span class="glyphicon glyphicon-ok"></span></p>
+                }
+                else
+                {*@
+                    <input hidden asp-for="NewUserId" value="@item.NewUserId"/>
+                    <input hidden asp-for="LeaveOfAbsenceId" value="@item.Id"/>
+                    <input hidden asp-for="ShiftId" value="@item.Shift.Id"/>
+                    <button class="btn btn-green btn-circle block-right margin-top-20 margin-left-right5" title="Vervangingsaanvraag goedkeuren"><span class="glyphicon glyphicon-ok"></span></button>
+                @*}*@
+
+            </form>
+
+            <form method="post" asp-action="DisapproveLeaveOfAbsence">
+                @if (item.IsApproved == LeaveOfAbsence.Approved.Disapproved)
+                {
+                    <p title="Afwezigheidsverzoek is afgekeurd" class="block-right margin-top-20 margin-left-right5 p-notapproved"><span class="glyphicon glyphicon-ban-circle"></span></p>
+                }
+                else
+                {
+                    <input hidden asp-for="NewUserId" value="@item.NewUserId"/>
+                    <input hidden asp-for="LeaveOfAbsenceId" value="@item.Id"/>
+                    <button type="submit" class="btn btn-red btn-circle block-right margin-top-20 margin-left-right5" title="Vervangingsaanvraag afkeuren"><span class="glyphicon glyphicon-ban-circle"></span></button>
+                }
+
+            </form>
+        </li>
+    }
+</ul>
+</div>
+<div class="col-md-3"></div>
+</div>

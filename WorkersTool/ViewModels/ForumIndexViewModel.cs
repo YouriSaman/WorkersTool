@@ -11,7 +11,7 @@ namespace WorkersTool.ViewModels
     {
         public List<Message> Messages { get; set; }
         public Message Message { get; set; }
-
-        public IFormFile Image { get; set; }
+        public int MessageId { get; set; }
+        public int ReplyId { get; set; }
     }
 }

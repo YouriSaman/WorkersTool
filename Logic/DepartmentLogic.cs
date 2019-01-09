@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Data;
 using Models;
+using Repo;
 
 namespace Logic
 {
     public class DepartmentLogic
     {
-        private DepartmentContext _departmentContext = new DepartmentContext();
+        private DepartmentRepo _departmentRepo = new DepartmentRepo(Context.Mssql);
 
         public List<Department> GetAllDepartments()
         {
-            return _departmentContext.GetAllDepartments();
+            return _departmentRepo.GetAllDepartments();
         }
 
         public Department GetDepartmentById(int departmentId)
         {
-            return _departmentContext.GetDepartmentById(departmentId);
+            return _departmentRepo.GetDepartmentById(departmentId);
         }
     }
 }

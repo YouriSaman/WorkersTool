@@ -8,7 +8,7 @@ namespace Models
     {
         public int Id { get; set; }
         public DateTime Birthday { get; set; }
-        public string Gender { get; set; }
+        public int Gender { get; set; }
         public bool Rights { get; set; }
         public int AccountId { get; set; }
         public Account Account { get; set; }
