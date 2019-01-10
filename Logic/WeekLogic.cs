@@ -20,12 +20,10 @@ namespace Logic
             var firstDayOfYear = new DateTime(thisYear, 1, 1);
             var totalDays = (thisWeek - 1) * 7 - 1;
             var firstDayOfWeek = firstDayOfYear.AddDays(totalDays);
-            var week = new Week { From = firstDayOfWeek, Weeknumber = thisWeek };
-            var week1 = new Week { From = firstDayOfWeek.AddDays(7), Weeknumber = thisWeek+1 };
-            var week2 = new Week { From = firstDayOfWeek.AddDays(14), Weeknumber = thisWeek + 2 };
-            weeks.Add(week);
-            weeks.Add(week1);
-            weeks.Add(week2);
+
+            weeks.Add(new Week { From = firstDayOfWeek, Weeknumber = thisWeek });
+            weeks.Add(new Week { From = firstDayOfWeek.AddDays(7), Weeknumber = thisWeek + 1 });
+            weeks.Add(new Week { From = firstDayOfWeek.AddDays(14), Weeknumber = thisWeek + 2 });
 
             return weeks;
         }

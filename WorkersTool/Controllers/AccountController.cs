@@ -36,6 +36,7 @@ namespace WorkersTool.Controllers
                 PerformLogin(userAccount, user);
             }
 
+            ViewData["InvalidLogin"] = "Één of meerdere velden zijn niet correct ingevuld!";
             return RedirectToAction("Index", "Home");
         }
 
@@ -123,8 +124,13 @@ namespace WorkersTool.Controllers
 
             //Toevoegen in database
             userLogic.EditUser(user);
-            accountLogic.EditAccount(account);
 
+            if (accountLogic.EditAccount(account))
+            {
+                return RedirectToAction("Profile");
+            }
+
+            TempData["InvalidFields"] = "Er is iets fout gegaan bij het aanpassen van de accountgegevens, probeer het opnieuw!";
             return RedirectToAction("Profile");
         }
 

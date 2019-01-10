@@ -164,23 +164,23 @@ namespace Logic
                     }
                 }
 
-                ////Oude aanvragen niet meer tonen ---> Misschien gewoon verwijderen na 1 week in Database
-                //if (listAbsences.Count != 0)
-                //{
-                //    foreach (var shiftById in GetShiftsByIds(GetAllShiftIds()))
-                //    {
-                //        if (listAbsences.Count != 0)
-                //        {
-                //            if (shiftById.Id == listAbsences[i].ShiftId)
-                //            {
-                //                if (shiftById.Date < DateTime.Now)
-                //                {
-                //                    listAbsences.Remove(listAbsences[i]);
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
+                //Oude aanvragen niet meer tonen ---> Misschien gewoon verwijderen na 1 week in Database
+                if (listAbsences.Count != 0)
+                {
+                    foreach (var shiftById in GetShiftsByIds(GetAllShiftIds()))
+                    {
+                        if (listAbsences.Count != 0)
+                        {
+                            if (shiftById.Id == listAbsences[i].ShiftId)
+                            {
+                                if (shiftById.Date < DateTime.Now)
+                                {
+                                    listAbsences.Remove(listAbsences[i]);
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             return listAbsences;

@@ -10,24 +10,28 @@
             <input hidden asp-for="Account.Image" value="@Model.Account.Image"/>
         </div>
         <div class="col-md-4">
+            @if (TempData["InvalidFields"] != null)
+            {
+                <div class="alert alert-danger" role="alert">@TempData["InvalidFields"]</div>
+            }
             <label>Naam:</label>
-            <input class="form-control" type="text" asp-for="Account.Name" value="@Model.Account.Name" />
+            <input class="form-control" type="text" asp-for="Account.Name" value="@Model.Account.Name"/>
             <label>Gebruikersnaam:</label>
-            <input class="form-control" type="text" asp-for="Account.Username" value="@Model.Account.Username" />
+            <input class="form-control" type="text" asp-for="Account.Username" value="@Model.Account.Username"/>
             <label>Wachtwoord:</label>
-            <input class="form-control" type="password" asp-for="Account.Password" value="@Model.Account.Password" />
+            <input class="form-control" type="password" asp-for="Account.Password" value="@Model.Account.Password"/>
             <label>Email:</label>
-            <input class="form-control" type="email" asp-for="Account.Email" value="@Model.Account.Email" />
+            <input class="form-control" type="email" asp-for="Account.Email" value="@Model.Account.Email"/>
             <label>Geboortedatum</label>
-            <input class="form-control" type="date" asp-for="User.Birthday" value="@Model.User.Birthday.ToString("yyyy-MM-dd")" />
+            <input class="form-control" type="date" asp-for="User.Birthday" value="@Model.User.Birthday.ToString("yyyy-MM-dd")"/>
             <label>Adres:</label>
-            <input class="form-control" type="text" asp-for="Account.Adress" value="@Model.Account.Adress" />
+            <input class="form-control" type="text" asp-for="Account.Adress" value="@Model.Account.Adress"/>
             <label>Postcode:</label>
-            <input class="form-control" type="text" asp-for="Account.Postalcode" value="@Model.Account.Postalcode" />
+            <input class="form-control" type="text" asp-for="Account.Postalcode" value="@Model.Account.Postalcode"/>
             <label>Plaats:</label>
-            <input class="form-control" type="text" asp-for="Account.Residence" value="@Model.Account.Residence" />
+            <input class="form-control" type="text" asp-for="Account.Residence" value="@Model.Account.Residence"/>
             <label>Telefoonnummer:</label>
-            <input class="form-control" type="text" asp-for="Account.Phonenumber" value="@Model.Account.Phonenumber" />
+            <input class="form-control" type="text" asp-for="Account.Phonenumber" value="@Model.Account.Phonenumber"/>
             @*<input hidden value="@Model.User.Gender" /> Met Javascript selecteren*@
             <label>Geslacht</label>
             <select class="form-control" asp-for="User.Gender">

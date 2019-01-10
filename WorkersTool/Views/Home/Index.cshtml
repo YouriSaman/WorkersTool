@@ -16,6 +16,11 @@
                 }
                 else
                 {
+                    if (@ViewData["InvalidLogin"] != null)
+                     {
+                         <div class="alert alert-danger" role="alert">@ViewData["InvalidLogin"]</div>
+                     }
+
                     <div class="panel panel-ah">
                         <div class="panel-heading">Login met je account</div>
                         <div class="panel-body">
